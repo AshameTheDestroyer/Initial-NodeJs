@@ -1,0 +1,15 @@
+{
+    "semi": true,
+    "tabWidth": 4,
+    "indentSize": 4,
+    "printWidth": 80,
+    "useTabs": false,
+    "singleQuote": false,
+    "proseWrap": "always",
+    "requireConfig": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "bracketSameLine": false,
+    "editor.formatOnSave": true
+}
