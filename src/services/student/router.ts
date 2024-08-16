@@ -23,7 +23,7 @@ StudentRouter.get(`${STUDENT_ROUTE}/:id`, (request, response) =>
 StudentRouter.post(STUDENT_ROUTE, (request, response) =>
     new Student(request.body)
         .save()
-        .then((student) => response.send(student.id))
+        .then((student) => response.send(student))
         .catch((error) => response.status(400).send(error)),
 );
 
