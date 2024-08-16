@@ -1,15 +1,13 @@
 import { Student } from "./schema";
 import { RequestHandler } from "express";
+import { RequestHandlerWithID } from "@/types";
 
 export const GetAllStudents: RequestHandler = (_request, response) =>
     Student.find()
         .then((students) => response.send(students))
         .catch((error) => response.status(400).send(error));
 
-export const GetStudentByID: RequestHandler<{ id: string }> = (
-    request,
-    response,
-) =>
+export const GetStudentByID: RequestHandlerWithID = (request, response) =>
     Student.findById(request.params.id)
         .then((student) =>
             student != null
@@ -24,10 +22,7 @@ export const PostStudent: RequestHandler = (request, response) =>
         .then((student) => response.send(student))
         .catch((error) => response.status(400).send(error));
 
-export const PatchStudent: RequestHandler<{ id: string }> = (
-    request,
-    response,
-) =>
+export const PatchStudent: RequestHandlerWithID = (request, response) =>
     Student.findByIdAndUpdate(request.params.id, request.body, { new: true })
         .then((student) =>
             student != null
@@ -47,10 +42,7 @@ export const DeleteAllStudents: RequestHandler = (_request, response) =>
         )
         .catch((error) => response.status(400).send(error));
 
-export const DeleteStudentByID: RequestHandler<{ id: string }> = (
-    request,
-    response,
-) =>
+export const DeleteStudentByID: RequestHandlerWithID = (request, response) =>
     Student.findByIdAndDelete(request.params.id)
         .then((student) =>
             student != null
