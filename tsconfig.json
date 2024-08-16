@@ -3,12 +3,14 @@
         "strict": true,
         "allowJs": true,
         "jsx": "preserve",
-        "target": "es2016",
+        "target": "es2020",
         "rootDir": "./src",
         "outDir": "./dist",
         "module": "commonjs",
         "skipLibCheck": true,
         "esModuleInterop": true,
+        "moduleResolution": "node",
+        "preserveConstEnums": true,
         "forceConsistentCasingInFileNames": true,
         "paths": {
             "@/*": [
