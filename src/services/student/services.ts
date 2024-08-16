@@ -1,20 +1,20 @@
-import { Student } from "./schema";
+import { StudentModel } from "./schema";
 import { RequestHandler } from "express";
 import { RequestHandlerWithID } from "../../types";
 import { GetPaginationOptions, GetSortOptions } from "../../utils";
 
 export const GetStudents: RequestHandler = (request, response) =>
-    Student.find({}, {}, GetPaginationOptions(request))
+    StudentModel.find({}, {}, GetPaginationOptions(request))
         .sort(GetSortOptions(request))
         .then((students) =>
-            Student.countDocuments().then((totalCount) =>
+            StudentModel.countDocuments().then((totalCount) =>
                 response.send({ totalCount, data: students }),
             ),
         )
         .catch((error) => response.status(400).send(error));
 
 export const GetStudentByID: RequestHandlerWithID = (request, response) =>
-    Student.findById(request.params.id)
+    StudentModel.findById(request.params.id)
         .then((student) =>
             student != null
                 ? response.send(student)
@@ -23,13 +23,15 @@ export const GetStudentByID: RequestHandlerWithID = (request, response) =>
         .catch((error) => response.status(400).send(error));
 
 export const PostStudent: RequestHandler = (request, response) =>
-    new Student(request.body)
+    new StudentModel(request.body)
         .save()
         .then((student) => response.send(student))
         .catch((error) => response.status(400).send(error));
 
 export const PatchStudent: RequestHandlerWithID = (request, response) =>
-    Student.findByIdAndUpdate(request.params.id, request.body, { new: true })
+    StudentModel.findByIdAndUpdate(request.params.id, request.body, {
+        new: true,
+    })
         .then((student) =>
             student != null
                 ? response.send({
@@ -40,7 +42,7 @@ export const PatchStudent: RequestHandlerWithID = (request, response) =>
         .catch((error) => response.status(400).send(error));
 
 export const DeleteAllStudents: RequestHandler = (_request, response) =>
-    Student.deleteMany()
+    StudentModel.deleteMany()
         .then((result) =>
             response.send({
                 message: `${result.deletedCount} students has been successfully deleted.`,
@@ -49,7 +51,7 @@ export const DeleteAllStudents: RequestHandler = (_request, response) =>
         .catch((error) => response.status(400).send(error));
 
 export const DeleteStudentByID: RequestHandlerWithID = (request, response) =>
-    Student.findByIdAndDelete(request.params.id)
+    StudentModel.findByIdAndDelete(request.params.id)
         .then((student) =>
             student != null
                 ? response.send({

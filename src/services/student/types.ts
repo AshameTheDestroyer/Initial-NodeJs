@@ -1,3 +1,3 @@
-import { Student } from "./schema";
+import { StudentModel } from "./schema";
 
-export type StudentProps = Awaited<ReturnType<typeof Student.create>>[0];
+export type StudentProps = Awaited<ReturnType<typeof StudentModel.create>>[0];
