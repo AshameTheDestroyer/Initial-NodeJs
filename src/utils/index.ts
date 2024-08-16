@@ -1,1 +1,2 @@
-export * from "./GetPaginationFilters";
+export * from "./GetSortOptions";
+export * from "./GetPaginationOptions";
