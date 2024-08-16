@@ -4,7 +4,7 @@ import { QueryOptions } from "mongoose";
 export const QUERY_LIMIT = 20;
 export const MAXIMUM_QUERY_LIMIT = 100;
 
-export function GetPaginationFilters(request: Request): QueryOptions {
+export function GetPaginationOptions(request: Request): QueryOptions {
     const limit = Math.min(
         parseInt((request.query["limit"] ?? QUERY_LIMIT) as string),
         MAXIMUM_QUERY_LIMIT,
