@@ -1,10 +1,15 @@
 import { Student } from "./schema";
 import { RequestHandler } from "express";
-import { RequestHandlerWithID } from "@/types";
+import { RequestHandlerWithID } from "../../types";
+import { GetPaginationFilters } from "../../utils";
 
-export const GetAllStudents: RequestHandler = (_request, response) =>
-    Student.find()
-        .then((students) => response.send(students))
+export const GetStudents: RequestHandler = (request, response) =>
+    Student.find({}, {}, GetPaginationFilters(request))
+        .then((students) =>
+            Student.countDocuments().then((totalCount) =>
+                response.send({ totalCount, data: students }),
+            ),
+        )
         .catch((error) => response.status(400).send(error));
 
 export const GetStudentByID: RequestHandlerWithID = (request, response) =>

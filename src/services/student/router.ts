@@ -1,8 +1,8 @@
 import { Router } from "express";
 import {
+    GetStudents,
     PostStudent,
     PatchStudent,
-    GetAllStudents,
     GetStudentByID,
     DeleteAllStudents,
     DeleteStudentByID,
@@ -11,7 +11,7 @@ import {
 export const STUDENT_ROUTE = "/student";
 export const StudentRouter = Router();
 
-StudentRouter.get(STUDENT_ROUTE, GetAllStudents);
+StudentRouter.get(STUDENT_ROUTE, GetStudents);
 StudentRouter.get(`${STUDENT_ROUTE}/:id`, GetStudentByID);
 
 StudentRouter.post(STUDENT_ROUTE, PostStudent);
