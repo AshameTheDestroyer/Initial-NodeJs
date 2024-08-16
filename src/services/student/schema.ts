@@ -4,8 +4,8 @@ export const StudentSchema = new mongoose.Schema(
     {
         name: String,
         year: Number,
+        subjects: [String],
         roll_number: Number,
-        subjects: Array<String>,
     },
     { versionKey: false },
 );
