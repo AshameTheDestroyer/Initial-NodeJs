@@ -12,11 +12,11 @@
         "moduleResolution": "node",
         "preserveConstEnums": true,
         "forceConsistentCasingInFileNames": true,
-        "paths": {
-            "@/*": [
-                "./src/*"
-            ]
-        },
+        // "paths": {
+        //     "@/*": [
+        //         "./src/*"
+        //     ]
+        // },
     },
     "include": [
         "**/*.ts",
