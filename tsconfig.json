@@ -3,7 +3,7 @@
         "strict": true,
         "allowJs": true,
         "jsx": "preserve",
-        "target": "es2020",
+        "target": "es2021",
         "rootDir": "./src",
         "outDir": "./dist",
         "module": "commonjs",
