@@ -8,9 +8,14 @@ export const UserSchema = new mongoose.Schema(
         role: { type: String, enum: ["user", "admin"], default: "user" },
     },
     {
+        autoIndex: false,
         timestamps: true,
         versionKey: false,
     },
 );
 
+UserSchema.index({ name: "text", email: "text" });
+
 export const UserModel = mongoose.model("User", UserSchema);
+
+UserModel.createIndexes();
