@@ -7,12 +7,12 @@ import { StudentRouter } from "./services/student";
 
 configDotenv();
 
-const port = 3000;
+const PORT = 3000;
 const app = express();
 
 app.use(express.json());
-app.listen(port, () =>
-    console.log(`Server is running on http://localhost:${port}`),
+app.listen(PORT, () =>
+    console.log(`Server is running on http://localhost:${PORT}`),
 );
 
 mongoose.connect(process.env.MONGODB_URI ?? "");
