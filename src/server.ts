@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { configDotenv } from "dotenv";
 
+import { UserRouter } from "./services/user";
 import { StudentRouter } from "./services/student";
 
 configDotenv();
@@ -16,4 +17,5 @@ app.listen(port, () =>
 
 mongoose.connect(process.env.MONGODB_URI ?? "");
 
+app.use(UserRouter);
 app.use(StudentRouter);
