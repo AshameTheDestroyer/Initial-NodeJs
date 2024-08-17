@@ -8,7 +8,7 @@ export const SignUp: RequestHandler = (request, response) =>
                 ? response
                       .status(400)
                       .send({ message: "Email is already taken." })
-                : new UserModel(request.body)
+                : new UserModel({ ...request.body, role: "user" })
                       .save()
                       .then(() =>
                           response.send({
