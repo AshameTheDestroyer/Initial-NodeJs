@@ -1,7 +1,13 @@
 import { UserModel } from "./schema";
-import { RequestHandler } from "express";
-import { RequestHandlerWithID } from "../../types";
-import { GetDocuments, GetDocumentByID } from "../../utils";
+import {
+    GetDocuments,
+    GetDocumentByID,
+    DeleteAllDocuments,
+    DeleteDocumentByID,
+} from "../../utils";
 
-export const GetUsers: RequestHandler = GetDocuments(UserModel);
-export const GetUserByID: RequestHandlerWithID = GetDocumentByID(UserModel);
+export const GetUsers = GetDocuments(UserModel);
+export const GetUserByID = GetDocumentByID(UserModel);
+
+export const DeleteAllUSers = DeleteAllDocuments(UserModel);
+export const DeleteUserByID = DeleteDocumentByID(UserModel);
