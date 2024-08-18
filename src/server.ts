@@ -8,15 +8,14 @@ import { AuthenticationRouter } from "./services/authentication";
 
 configDotenv();
 
-const PORT = 3000;
 const app = express();
 
 app.use(express.json());
-app.listen(PORT, () =>
-    console.log(`Server is running on http://localhost:${PORT}`),
+app.listen(process.env["PORT"], () =>
+    console.log(`Server is running on http://localhost:${process.env["PORT"]}`),
 );
 
-mongoose.connect(process.env.MONGODB_URI ?? "");
+mongoose.connect(process.env["MONGODB_URI"] ?? "");
 
 app.use(UserRouter);
 app.use(StudentRouter);
