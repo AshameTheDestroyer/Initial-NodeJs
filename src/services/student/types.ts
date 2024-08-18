@@ -1,4 +1,4 @@
-import { StudentModel } from "./schema";
-import { UnwrapModel } from "../../types";
+import { StudentSchema } from "./schema";
+import { InferSchemaType } from "mongoose";
 
-export type StudentProps = UnwrapModel<typeof StudentModel.create>;
+export type StudentProps = InferSchemaType<typeof StudentSchema>;

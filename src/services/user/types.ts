@@ -1,4 +1,4 @@
-import { UserModel } from "./schema";
-import { UnwrapModel } from "../../types";
+import { UserSchema } from "./schema";
+import { InferSchemaType } from "mongoose";
 
-export type UserProps = UnwrapModel<typeof UserModel.create>;
+export type UserProps = InferSchemaType<typeof UserSchema>;
