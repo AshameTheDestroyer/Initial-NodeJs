@@ -4,7 +4,10 @@ import { GetSortOptions } from "./GetSortOptions";
 import { GetSearchOptions } from "./GetSearchOptions";
 import { GetPaginationOptions } from "./GetPaginationOptions";
 
-export function GetDocuments<T>(model: Model<T>): RequestHandler {
+export function GetDocuments<T>(
+    model: Model<T>,
+    ...fields: Array<`${"" | "+" | "-"}${Exclude<keyof T, symbol>}`>
+): RequestHandler {
     return (request, response) =>
         model
             .listIndexes()
@@ -15,7 +18,9 @@ export function GetDocuments<T>(model: Model<T>): RequestHandler {
                         {},
                         GetPaginationOptions(request),
                     )
+                    .select(fields)
                     .sort(GetSortOptions(request))
+                    .then((documents) => documents)
                     .then((documents) =>
                         model
                             .countDocuments()
