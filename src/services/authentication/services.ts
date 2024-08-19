@@ -14,7 +14,7 @@ export const SignUp: RequestHandler = (request, response) =>
                       (hashedPassword) =>
                           new UserModel({
                               ...request.body,
-                              role: "user",
+                              role: undefined,
                               password: hashedPassword,
 
                               _resetToken: undefined,
