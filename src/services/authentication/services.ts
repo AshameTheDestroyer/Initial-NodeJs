@@ -16,6 +16,9 @@ export const SignUp: RequestHandler = (request, response) =>
                               ...request.body,
                               role: "user",
                               password: hashedPassword,
+
+                              _resetToken: undefined,
+                              _resetTokenExpirationDate: undefined,
                           })
                               .save()
                               .then(() =>
