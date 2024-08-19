@@ -18,4 +18,5 @@ export async function TestGetAllStudents() {
     expect(json).toHaveProperty("data");
 }
 
-describe("GET /student", () => it("Get all students.", TestGetAllStudents));
+describe("GET /student", () =>
+    it("All students were successfully fetched.", TestGetAllStudents));

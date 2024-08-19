@@ -23,6 +23,6 @@ export async function TestLogin() {
 }
 
 describe("POST /authentication/login", () =>
-    it("Log in with an account.", () => {
+    it("Successfully logged in.", () => {
         TestLogin();
     }));
