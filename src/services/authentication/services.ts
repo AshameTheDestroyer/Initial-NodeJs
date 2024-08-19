@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import Jwt from "jsonwebtoken";
 import { RequestHandler } from "express";
 import { UserModel } from "../user/schema";
@@ -53,3 +54,43 @@ export const Login: RequestHandler = (request, response) =>
                   ),
         )
         .catch((error) => response.status(500).send(error));
+
+export const ForgotPassword: (
+    resetTokenExpirationTime: number,
+    OnGenerateResetToken: (props: {
+        email: string;
+        resetToken: string;
+    }) => void,
+) => RequestHandler =
+    (resetTokenExpirationTime, OnGenerateResetToken) =>
+    async (request, response) => {
+        try {
+            const user = await UserModel.findOne({
+                email: request.body["email"],
+            });
+            if (user == null) {
+                return response
+                    .status(401)
+                    .send({ message: "Email isn't registered." });
+            }
+
+            const resetToken = crypto.randomBytes(20).toString("hex");
+
+            OnGenerateResetToken({ email: user.email, resetToken });
+
+            user._resetToken = resetToken;
+            user._resetTokenExpirationDate =
+                Date.now() + resetTokenExpirationTime;
+
+            await user.save();
+            return response.send({
+                message: "Password reset token has been sent.",
+            });
+        } catch (error) {
+            console.log(error);
+            return response.status(500).send(error);
+        }
+    };
+            return response.status(500).send(error);
+        }
+    };
