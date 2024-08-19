@@ -91,6 +91,31 @@ export const ForgotPassword: (
             return response.status(500).send(error);
         }
     };
-            return response.status(500).send(error);
+
+export const ResetPassword: RequestHandler = async (request, response) => {
+    try {
+        const user = await UserModel.findOne({
+            _resetToken: request.body["resetToken"],
+            _resetTokenExpirationDate: { $gt: Date.now() },
+        });
+
+        if (user == null) {
+            return response
+                .status(401)
+                .send({ message: "Reset token is either invalid or expired." });
         }
-    };
+
+        const hashedPassword = await HashPassword(request.body["newPassword"]);
+
+        user.password = hashedPassword;
+        user._resetToken = undefined;
+        user._resetTokenExpirationDate = undefined;
+
+        await user.save();
+        return response.send({
+            message: "Password has been reset successfully.",
+        });
+    } catch (error) {
+        return response.status(500).send(error);
+    }
+};
