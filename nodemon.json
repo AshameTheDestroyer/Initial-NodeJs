@@ -1,5 +1,5 @@
 {
     "watch": ["src"],
     "exec": "ts-node --files ./src/server.ts",
-    "ignore": ["node_modules", "src/frontend.ts"]
+    "ignore": ["node_modules", "src/frontend.ts", "*.test.ts"]
 }
