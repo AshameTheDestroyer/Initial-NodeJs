@@ -12,8 +12,10 @@ export const UserRouter = Router();
 
 UserRouter.get(USER_ROUTE, ValidateAuthenticity, GetUsers);
 UserRouter.get(`${USER_ROUTE}/:id`, ValidateAuthenticity, GetUserByID);
+// TODO: Implement this.
 // UserRouter.get(`${USER_ROUTE}/mine`, ValidateAuthenticity, GetMyUser);
 
+// TODO: Implement this.
 // UserRouter.patch(`${USER_ROUTE}/mine`, ValidateAuthenticity, PatchMyUser);
 
 UserRouter.delete(
@@ -28,3 +30,5 @@ UserRouter.delete(
     ValidateAuthority("admin"),
     DeleteUserByID,
 );
+// TODO: Implement this.
+// UserRouter.delete(`${USER_ROUTE}/mine`, ValidateAuthenticity, DeleteMyUser);
