@@ -1,16 +1,16 @@
 import nodemailer, { Transporter } from "nodemailer";
 
 export class EmailManager {
-    private static instance: EmailManager;
+    private static _instance: EmailManager;
 
     private email: string;
     private transporter: Transporter;
 
     public static get Instance() {
-        return (this.instance ??= new EmailManager());
+        return (this._instance ??= new EmailManager());
     }
 
-    public constructor() {
+    private constructor() {
         if (
             process.env["NODEMAILER_EMAIL"] == null ||
             process.env["NODEMAILER_PASSWORD"] == null
