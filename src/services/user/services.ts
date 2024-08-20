@@ -27,7 +27,7 @@ export const GetMyUser: RequestHandler = (request, response) => {
         .then((user) =>
             user != null
                 ? response.send(user)
-                : response.send({ message: "User isn't found." }),
+                : response.status(404).send({ message: "User isn't found." }),
         )
         .catch((error) => response.status(500).send(error));
 };
