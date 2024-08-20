@@ -40,16 +40,13 @@ export class TestAgent {
         const password = "12345678";
         const email = `${crypto.randomBytes(8).toString("hex")}@gmail.com`;
 
-        const response = await fetch(
-            "http://localhost:3000/authentication/signup",
-            {
+        await fetch("http://localhost:3000/authentication/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ name, email, password } as UserProps),
-            },
-        );
+        });
 
         return { email, password };
     }
