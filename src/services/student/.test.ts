@@ -3,15 +3,7 @@ import { describe, it } from "node:test";
 import { TestAgent } from "../authentication";
 
 async function TestGetAllStudents() {
-    const token = TestAgent.Instance.token;
-    const response = await fetch("http://localhost:3000/student", {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-    });
-
+    const response = await TestAgent.Fetch("/student", "GET");
     expect(response.status).toEqual(200);
 
     const json = await response.json();
@@ -19,4 +11,6 @@ async function TestGetAllStudents() {
 }
 
 TestAgent.OnAuthenticate(() =>
+    describe("GET /student", () =>
+        it("All students were successfully fetched.", TestGetAllStudents)),
 );

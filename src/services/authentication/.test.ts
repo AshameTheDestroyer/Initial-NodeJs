@@ -41,11 +41,11 @@ export class TestAgent {
         const email = `${crypto.randomBytes(8).toString("hex")}@gmail.com`;
 
         await fetch("http://localhost:3000/authentication/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ name, email, password } as UserProps),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, password } as UserProps),
         });
 
         return { email, password };
@@ -73,6 +73,16 @@ export class TestAgent {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${this._token}`,
+            },
+        });
+    }
+
+    public static Fetch(route: string, method: RequestMethod) {
+        return fetch(`http://localhost:3000${route}`, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${this.Instance.token}`,
             },
         });
     }
