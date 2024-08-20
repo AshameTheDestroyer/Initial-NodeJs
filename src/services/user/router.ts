@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ValidateAuthenticity, ValidateAuthority } from "../../middleware";
 import {
     GetUsers,
+    GetMyUser,
     GetUserByID,
     DeleteAllUSers,
     DeleteUserByID,
@@ -11,9 +12,8 @@ export const USER_ROUTE = "/user";
 export const UserRouter = Router();
 
 UserRouter.get(USER_ROUTE, ValidateAuthenticity, GetUsers);
+UserRouter.get(`${USER_ROUTE}/mine`, ValidateAuthenticity, GetMyUser);
 UserRouter.get(`${USER_ROUTE}/:id`, ValidateAuthenticity, GetUserByID);
-// TODO: Implement this.
-// UserRouter.get(`${USER_ROUTE}/mine`, ValidateAuthenticity, GetMyUser);
 
 // TODO: Implement this.
 // UserRouter.patch(`${USER_ROUTE}/mine`, ValidateAuthenticity, PatchMyUser);

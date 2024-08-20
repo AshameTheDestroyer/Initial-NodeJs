@@ -1,4 +1,5 @@
 import { UserModel } from "./schema";
+import { RequestHandler } from "express";
 import {
     GetDocuments,
     GetDocumentByID,
@@ -18,6 +19,18 @@ export const GetUserByID = GetDocumentByID(
     "-_resetToken",
     "-_resetTokenExpirationDate",
 );
+export const GetMyUser: RequestHandler = (request, response) => {
+    UserModel.findById({
+        _id: (request as typeof request & { userId: string }).userId,
+    })
+        .select(["-password", "-_resetToken", "-_resetTokenExpirationDate"])
+        .then((user) =>
+            user != null
+                ? response.send(user)
+                : response.send({ message: "User isn't found." }),
+        )
+        .catch((error) => response.status(500).send(error));
+};
 
 export const DeleteAllUSers = DeleteAllDocuments(UserModel);
 export const DeleteUserByID = DeleteDocumentByID(UserModel);
