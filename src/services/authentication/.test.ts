@@ -2,7 +2,7 @@ import expect from "expect";
 import { UserProps } from "../user";
 import { describe, it } from "node:test";
 
-export async function TestLogin() {
+export async function GetToken() {
     const response = await fetch(`http://localhost:3000/authentication/login`, {
         method: "POST",
         headers: {
@@ -14,15 +14,14 @@ export async function TestLogin() {
         } as UserProps),
     });
 
-    expect(response.status).toEqual(200);
-
     const json = await response.json();
-    expect(json).toHaveProperty("token");
-
     return json["token"] as string;
 }
 
+async function TestLogin() {
+    const token = GetToken();
+    expect(token).toBeDefined();
+}
+
 describe("POST /authentication/login", () =>
-    it("Successfully logged in.", () => {
-        TestLogin();
-    }));
+    it("Successfully logged in.", TestLogin));

@@ -1,9 +1,9 @@
 import expect from "expect";
 import { describe, it } from "node:test";
-import { TestLogin } from "../authentication";
+import { GetToken } from "../authentication";
 
-export async function TestGetAllStudents() {
-    const token = await TestLogin();
+async function TestGetAllStudents() {
+    const token = await GetToken();
     const response = await fetch(`http://localhost:3000/student`, {
         method: "GET",
         headers: {
