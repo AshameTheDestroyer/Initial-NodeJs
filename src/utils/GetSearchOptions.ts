@@ -17,17 +17,16 @@ export function GetSearchOptions<T>(
         .reduce(
             (accumulator, index) => ({
                 ...accumulator,
-                ...Object.keys(index.weights!).reduce(
-                    (accumulator, key) => ({
-                        ...accumulator,
-                        [key]: {
-                            $regex: new RegExp(
-                                search,
-                                _case == "sensitive" ? "" : "i",
-                            ),
-                        },
-                    }),
-                    {},
+                $or: Object.keys(index.weights!).map(
+                    (key) =>
+                        ({
+                            [key]: {
+                                $regex: new RegExp(
+                                    search,
+                                    _case == "sensitive" ? "" : "i",
+                                ),
+                            },
+                        } as FilterQuery<T>),
                 ),
             }),
             {} as FilterQuery<T>,
