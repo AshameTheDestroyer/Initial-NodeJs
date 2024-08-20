@@ -1,10 +1,10 @@
 import expect from "expect";
 import { describe, it } from "node:test";
-import { GetToken } from "../authentication";
+import { TestAgent } from "../authentication";
 
 async function TestGetAllStudents() {
-    const token = await GetToken();
-    const response = await fetch(`http://localhost:3000/student`, {
+    const token = TestAgent.Instance.token;
+    const response = await fetch("http://localhost:3000/student", {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -18,5 +18,8 @@ async function TestGetAllStudents() {
     expect(json).toHaveProperty("data");
 }
 
-describe("GET /student", () =>
-    it("All students were successfully fetched.", TestGetAllStudents));
+TestAgent.OnLogin(() =>
+    describe("GET /student", { skip: TestAgent.Instance.token == null }, () =>
+        it("All students were successfully fetched.", TestGetAllStudents),
+    ),
+);
