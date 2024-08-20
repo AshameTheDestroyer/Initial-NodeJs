@@ -29,7 +29,7 @@ export class TestAgent {
         })();
     }
 
-    public static OnLogin(
+    public static OnAuthenticate(
         callback: (typeof this.Instance.subscribers)[number],
     ) {
         this.Instance.subscribers.push(callback);

@@ -18,8 +18,5 @@ async function TestGetAllStudents() {
     expect(json).toHaveProperty("data");
 }
 
-TestAgent.OnLogin(() =>
-    describe("GET /student", { skip: TestAgent.Instance.token == null }, () =>
-        it("All students were successfully fetched.", TestGetAllStudents),
-    ),
+TestAgent.OnAuthenticate(() =>
 );
