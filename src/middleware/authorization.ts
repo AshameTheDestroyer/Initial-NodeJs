@@ -11,9 +11,11 @@ export const ValidateAuthority: (
         )
             .then((user) =>
                 user == null
-                    ? response.send({ message: "User isn't found." })
+                    ? response
+                          .status(404)
+                          .send({ message: "User isn't found." })
                     : !requiredRoles.includes(user.role)
-                    ? response.send({
+                    ? response.status(403).send({
                           message:
                               "User is unauthorized, should have the role of " +
                               new Intl.ListFormat("en-US", {

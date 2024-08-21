@@ -7,7 +7,7 @@ export const ValidateAuthenticity: RequestHandler = (
     next,
 ) => {
     if (request.headers.authorization == null) {
-        response.status(400).send({ message: "User is unauthenticated." });
+        response.status(401).send({ message: "User is unauthenticated." });
         return;
     }
 
