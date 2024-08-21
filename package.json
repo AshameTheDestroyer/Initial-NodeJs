@@ -36,11 +36,5 @@
         "nodemailer": "^6.9.14",
         "nodemon": "^3.1.4",
         "supertest": "^7.0.0"
-    },
-    "jest": {
-        "testEnvironment": "node",
-        "coveragePathIgnorePatterns": [
-            "/node_modules/"
-        ]
     }
 }
