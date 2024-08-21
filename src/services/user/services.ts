@@ -34,3 +34,17 @@ export const GetMyUser: RequestHandler = (request, response) => {
 
 export const DeleteAllUSers = DeleteAllDocuments(UserModel);
 export const DeleteUserByID = DeleteDocumentByID(UserModel);
+
+export const DeleteMyUser: RequestHandler = (request, response) => {
+    UserModel.findByIdAndDelete({
+        _id: (request as typeof request & { userId: string }).userId,
+    })
+        .then((user) =>
+            user == null
+                ? response.status(404).send({ message: "User isn't found." })
+                : response.send({
+                      message: "Your user has been deleted successfully.",
+                  }),
+        )
+        .catch((error) => response.status(500).send(error));
+};

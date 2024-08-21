@@ -4,6 +4,7 @@ import {
     GetUsers,
     GetMyUser,
     GetUserByID,
+    DeleteMyUser,
     DeleteAllUSers,
     DeleteUserByID,
 } from "./services";
@@ -11,12 +12,15 @@ import {
 export const USER_ROUTE = "/user";
 export const UserRouter = Router();
 
-UserRouter.get(USER_ROUTE, ValidateAuthenticity, GetUsers);
 UserRouter.get(`${USER_ROUTE}/mine`, ValidateAuthenticity, GetMyUser);
+
+UserRouter.get(USER_ROUTE, ValidateAuthenticity, GetUsers);
 UserRouter.get(`${USER_ROUTE}/:id`, ValidateAuthenticity, GetUserByID);
 
 // TODO: Implement this.
 // UserRouter.patch(`${USER_ROUTE}/mine`, ValidateAuthenticity, PatchMyUser);
+
+UserRouter.delete(`${USER_ROUTE}/mine`, ValidateAuthenticity, DeleteMyUser);
 
 UserRouter.delete(
     USER_ROUTE,
@@ -30,5 +34,3 @@ UserRouter.delete(
     ValidateAuthority("admin"),
     DeleteUserByID,
 );
-// TODO: Implement this.
-// UserRouter.delete(`${USER_ROUTE}/mine`, ValidateAuthenticity, DeleteMyUser);
