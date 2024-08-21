@@ -3,10 +3,10 @@ import nodemailer, { Transporter } from "nodemailer";
 export class EmailManager {
     private static _instance: EmailManager;
 
-    private email: string;
-    private transporter: Transporter;
+    private _email: string;
+    private _transporter: Transporter;
 
-    public static get Instance() {
+    public static get instance() {
         return (this._instance ??= new EmailManager());
     }
 
@@ -20,11 +20,11 @@ export class EmailManager {
             );
         }
 
-        this.transporter = nodemailer.createTransport({
+        this._transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
                 pass: process.env["NODEMAILER_PASSWORD"],
-                user: (this.email = process.env["NODEMAILER_EMAIL"]),
+                user: (this._email = process.env["NODEMAILER_EMAIL"]),
             },
         });
     }
@@ -34,12 +34,12 @@ export class EmailManager {
         title: string;
         receiver: string;
     }) {
-        this.Instance.transporter.sendMail(
+        this.instance._transporter.sendMail(
             {
                 text: props.text,
                 to: props.receiver,
                 subject: props.title,
-                from: this.Instance.email,
+                from: this.instance._email,
             },
             (error, info) =>
                 error
