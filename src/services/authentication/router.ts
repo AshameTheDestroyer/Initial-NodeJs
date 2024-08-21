@@ -18,8 +18,8 @@ AuthenticationRouter.post(
         //     title: "Password Reset Token",
         //     text: `This is your password reset token: "${props.resetToken}".\nIf you didn't ask for this, please ignore this message.`,
         // });
-
-        console.log(props.resetToken);
+        //
+        // console.log(props.resetToken);
     }),
 );
 AuthenticationRouter.post(

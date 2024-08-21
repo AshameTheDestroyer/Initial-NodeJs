@@ -87,7 +87,6 @@ export const ForgotPassword: (
                 message: "Password reset token has been sent.",
             });
         } catch (error) {
-            console.log(error);
             return response.status(500).send(error);
         }
     };
