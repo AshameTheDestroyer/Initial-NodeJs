@@ -16,7 +16,7 @@ export async function TestCRUDDocument(props: {
             body: props.createBody,
             route: `${props.route}`,
         });
-        expect(response.status).toEqual(200);
+        expect(response.status).toEqual(201);
 
         const json = await response.json();
         expect(json).toHaveProperty("_id");
