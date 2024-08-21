@@ -1,3 +1,4 @@
+import morgan from "morgan";
 import express from "express";
 import mongoose from "mongoose";
 import { configDotenv } from "dotenv";
@@ -5,7 +6,6 @@ import { configDotenv } from "dotenv";
 import { UserRouter } from "./services/user";
 import { StudentRouter } from "./services/student";
 import { AuthenticationRouter } from "./services/authentication";
-import morgan from "morgan";
 
 configDotenv();
 
