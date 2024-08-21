@@ -14,7 +14,7 @@ export const ValidateAuthenticity: RequestHandler = (
     try {
         const payload = Jwt.verify(
             request.headers.authorization.split(" ")[1],
-            "secretKey",
+            process.env["JWT_KEY"]!,
         );
 
         const _request = request as typeof request & { userId: string };

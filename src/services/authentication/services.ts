@@ -45,7 +45,7 @@ export const Login: RequestHandler = (request, response) =>
                               ? response.send({
                                     token: Jwt.sign(
                                         { userId: user._id },
-                                        "secretKey",
+                                        process.env["JWT_KEY"]!,
                                     ),
                                 })
                               : response.status(401).send({
