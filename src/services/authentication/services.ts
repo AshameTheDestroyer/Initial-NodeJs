@@ -34,7 +34,7 @@ export const Signup: RequestHandler = (request, response) =>
                           )
                               .save()
                               .then(() =>
-                                  response.send({
+                                  response.status(201).send({
                                       message:
                                           "User has signed up successfully.",
                                   }),

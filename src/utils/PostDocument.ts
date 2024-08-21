@@ -5,6 +5,6 @@ export function PostDocument<T>(model: Model<T>): RequestHandler {
     return (request, response) =>
         new model(request.body)
             .save()
-            .then((document) => response.send(document))
+            .then((document) => response.status(201).send(document))
             .catch((error) => response.status(500).send(error));
 }
