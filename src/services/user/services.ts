@@ -7,18 +7,6 @@ import {
     DeleteDocumentByID,
 } from "../../utils";
 
-export const GetUsers = GetDocuments(
-    UserModel,
-    "-password",
-    "-_resetToken",
-    "-_resetTokenExpirationDate",
-);
-export const GetUserByID = GetDocumentByID(
-    UserModel,
-    "-password",
-    "-_resetToken",
-    "-_resetTokenExpirationDate",
-);
 export const GetMyUser: RequestHandler = (request, response) => {
     UserModel.findById({
         _id: (request as typeof request & { userId: string }).userId,
@@ -32,8 +20,18 @@ export const GetMyUser: RequestHandler = (request, response) => {
         .catch((error) => response.status(500).send(error));
 };
 
-export const DeleteAllUSers = DeleteAllDocuments(UserModel);
-export const DeleteUserByID = DeleteDocumentByID(UserModel);
+export const GetUsers = GetDocuments(
+    UserModel,
+    "-password",
+    "-_resetToken",
+    "-_resetTokenExpirationDate",
+);
+export const GetUserByID = GetDocumentByID(
+    UserModel,
+    "-password",
+    "-_resetToken",
+    "-_resetTokenExpirationDate",
+);
 
 export const DeleteMyUser: RequestHandler = (request, response) => {
     UserModel.findByIdAndDelete({
@@ -48,3 +46,6 @@ export const DeleteMyUser: RequestHandler = (request, response) => {
         )
         .catch((error) => response.status(500).send(error));
 };
+
+export const DeleteAllUSers = DeleteAllDocuments(UserModel);
+export const DeleteUserByID = DeleteDocumentByID(UserModel);
