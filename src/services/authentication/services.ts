@@ -4,7 +4,7 @@ import { RequestHandler } from "express";
 import { UserModel } from "../user/schema";
 import { CheckPassword, HashPassword } from "../../utils";
 
-export const SignUp: RequestHandler = (request, response) =>
+export const Signup: RequestHandler = (request, response) =>
     UserModel.findOne({ email: request.body["email"] })
         .then((user) =>
             user != null

@@ -1,13 +1,13 @@
 import { Router } from "express";
 // import { EmailManager } from "../../third-party/EmailManager";
-import { Login, SignUp, ForgotPassword, ResetPassword } from "./services";
+import { Login, Signup, ForgotPassword, ResetPassword } from "./services";
 
 export const AUTHENTICATION_ROUTE = "/authentication";
 export const AuthenticationRouter = Router();
 
 export const RESET_TOKEN_EXPIRATION_TIME = 60 * 60 * 1000;
 
-AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/signup`, SignUp);
+AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/signup`, Signup);
 AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/login`, Login);
 
 AuthenticationRouter.post(
