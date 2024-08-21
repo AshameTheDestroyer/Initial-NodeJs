@@ -1,5 +1,6 @@
 import { UserModel } from "./schema";
 import { RequestHandler } from "express";
+import { EmendUserBody } from "../authentication";
 import {
     GetDocuments,
     GetDocumentByID,
@@ -32,6 +33,23 @@ export const GetUserByID = GetDocumentByID(
     "-_resetToken",
     "-_resetTokenExpirationDate",
 );
+
+export const PatchMyUser: RequestHandler = (request, response) => {
+    UserModel.findByIdAndUpdate(
+        {
+            _id: (request as typeof request & { userId: string }).userId,
+        },
+        { ...EmendUserBody(request.body), email: undefined },
+        { new: true },
+    )
+        .select(["-password", "-_resetToken", "-_resetTokenExpirationDate"])
+        .then((user) =>
+            user != null
+                ? response.send(user)
+                : response.status(404).send({ message: "User isn't found." }),
+        )
+        .catch((error) => response.status(500).send(error));
+};
 
 export const DeleteMyUser: RequestHandler = (request, response) => {
     UserModel.findByIdAndDelete({

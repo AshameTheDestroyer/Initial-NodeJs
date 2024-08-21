@@ -3,6 +3,7 @@ import { ValidateAuthenticity, ValidateAuthority } from "../../middleware";
 import {
     GetUsers,
     GetMyUser,
+    PatchMyUser,
     GetUserByID,
     DeleteMyUser,
     DeleteAllUSers,
@@ -22,8 +23,7 @@ UserRouter.get(
 );
 UserRouter.get(`${USER_ROUTE}/:id`, ValidateAuthenticity, GetUserByID);
 
-// TODO: Implement this.
-// UserRouter.patch(`${USER_ROUTE}/mine`, ValidateAuthenticity, PatchMyUser);
+UserRouter.patch(`${USER_ROUTE}/mine`, ValidateAuthenticity, PatchMyUser);
 
 UserRouter.delete(`${USER_ROUTE}/mine`, ValidateAuthenticity, DeleteMyUser);
 
