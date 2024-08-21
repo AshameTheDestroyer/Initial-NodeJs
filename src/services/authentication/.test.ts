@@ -10,34 +10,35 @@ export class TestAgent {
     private static _instance: TestAgent;
 
     private _token?: string;
-
-    private subscribers: Array<Function> = [];
+    private _subscribers: Array<Function> = [];
 
     public get token() {
         return this._token;
     }
 
-    public static get Instance() {
+    public static get instance() {
         return (this._instance ??= new TestAgent());
     }
 
     private constructor() {
-        (async () => {
-            const { email, password } = await this.Signup();
-            this._token = await this.Login({ email, password });
-
-            for (const callback of this.subscribers) {
-                await callback();
-            }
-
-            this.DeleteOwnAccount();
-        })();
+        this.Initialize();
     }
 
     public static OnAuthenticate(
-        callback: (typeof this.Instance.subscribers)[number],
+        callback: (typeof this.instance._subscribers)[number],
     ) {
-        this.Instance.subscribers.push(callback);
+        this.instance._subscribers.push(callback);
+    }
+
+    private async Initialize() {
+        const { email, password } = await this.Signup();
+        this._token = await this.Login({ email, password });
+
+        for (const callback of this._subscribers) {
+            await callback();
+        }
+
+        this.DeleteOwnAccount();
     }
 
     private async Signup() {
@@ -97,7 +98,7 @@ export class TestAgent {
             method,
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${this.Instance.token}`,
+                Authorization: `Bearer ${this.instance.token}`,
             },
             body: method == "GET" ? undefined : JSON.stringify(body ?? {}),
         });
@@ -105,7 +106,7 @@ export class TestAgent {
 }
 
 async function TestAuthentication() {
-    expect(TestAgent.Instance).toBeDefined();
+    expect(TestAgent.instance).toBeDefined();
 }
 
 describe("POST /authentication/signup => /authentication/login", () =>
