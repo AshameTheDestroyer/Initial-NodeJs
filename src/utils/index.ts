@@ -6,6 +6,7 @@ export * from "./CheckPassword";
 export * from "./GetSortOptions";
 export * from "./GetDocumentByID";
 export * from "./GetSearchOptions";
+export * from "./TestCRUDDocument";
 export * from "./DeleteAllDocuments";
 export * from "./DeleteDocumentByID";
 export * from "./GetPaginationOptions";

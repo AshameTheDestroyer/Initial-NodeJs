@@ -2,6 +2,7 @@ import expect from "expect";
 import { StudentProps } from "./types";
 import { describe, it } from "node:test";
 import { TestAgent } from "../authentication";
+import { TestCRUDDocument } from "../../utils";
 
 async function TestGetAllStudents() {
     const response = await TestAgent.Fetch("/student", "GET");
@@ -12,47 +13,20 @@ async function TestGetAllStudents() {
 }
 
 async function TestCRUDStudent() {
-    async function TestCreateStudent() {
-        const response = await TestAgent.Fetch("/student", "POST", {
+    await TestCRUDDocument({
+        route: "/student",
+        Fetch: (props) =>
+            TestAgent.Fetch(props.route, props.method, props.body),
+        updateBody: {
+            name: "Updated Test Student",
+        } as StudentProps,
+        createBody: {
             year: 3,
             rollNumber: 3,
             subjects: ["Test"],
             name: "Test Student",
-        } as StudentProps);
-        expect(response.status).toEqual(200);
-
-        const json = await response.json();
-        expect(json).toHaveProperty("_id");
-        return json["_id"] as string;
-    }
-
-    async function TestReadStudent(ID: string) {
-        const response = await TestAgent.Fetch(`/student/${ID}`, "GET");
-        expect(response.status).toEqual(200);
-
-        const json = await response.json();
-        expect(json).toHaveProperty("_id");
-    }
-
-    async function TestUpdateStudent(ID: string) {
-        const response = await TestAgent.Fetch(`/student/${ID}`, "PATCH", {
-            name: "Updated Test Student",
-        } as StudentProps);
-        expect(response.status).toEqual(200);
-
-        const json = await response.json();
-        expect(json).toHaveProperty("_id");
-    }
-
-    async function TestDeleteStudent(ID: string) {
-        const response = await TestAgent.Fetch(`/student/${ID}`, "DELETE");
-        expect(response.status).toEqual(200);
-    }
-
-    const ID = await TestCreateStudent();
-    await TestReadStudent(ID);
-    await TestUpdateStudent(ID);
-    await TestDeleteStudent(ID);
+        } as StudentProps,
+    });
 }
 
 TestAgent.OnAuthenticate(() =>
