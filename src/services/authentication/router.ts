@@ -12,11 +12,13 @@ AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/login`, Login);
 
 AuthenticationRouter.post(
     `${AUTHENTICATION_ROUTE}/forgot-password`,
-    ForgotPassword(RESET_TOKEN_EXPIRATION_TIME, (props) => {
+    ForgotPassword(RESET_TOKEN_EXPIRATION_TIME, (_props) => {
         // EmailManager.Send({
         //     receiver: props.email,
         //     title: "Password Reset Token",
-        //     text: `This is your password reset token: "${props.resetToken}".\nIf you didn't ask for this, please ignore this message.`,
+        //     text:
+        //         `This is your password reset token: "${props.resetToken}".\n` +
+        //         "If you didn't ask for this, please ignore this message.",
         // });
         //
         // console.log(props.resetToken);
