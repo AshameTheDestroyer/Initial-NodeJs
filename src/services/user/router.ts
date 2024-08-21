@@ -14,7 +14,12 @@ export const UserRouter = Router();
 
 UserRouter.get(`${USER_ROUTE}/mine`, ValidateAuthenticity, GetMyUser);
 
-UserRouter.get(USER_ROUTE, ValidateAuthenticity, GetUsers);
+UserRouter.get(
+    USER_ROUTE,
+    ValidateAuthenticity,
+    ValidateAuthority("admin"),
+    GetUsers,
+);
 UserRouter.get(`${USER_ROUTE}/:id`, ValidateAuthenticity, GetUserByID);
 
 // TODO: Implement this.
