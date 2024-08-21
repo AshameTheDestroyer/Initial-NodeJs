@@ -12,5 +12,5 @@ async function TestGetAllStudents() {
 
 TestAgent.OnAuthenticate(() =>
     describe("GET /student", () =>
-        it("All students were successfully fetched.", TestGetAllStudents)),
+        it("All students were fetched successfully.", TestGetAllStudents)),
 );
