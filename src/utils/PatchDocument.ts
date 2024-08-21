@@ -7,9 +7,7 @@ export function PatchDocument<T>(model: Model<T>): RequestHandlerWithID {
             .findByIdAndUpdate(request.params.id, request.body, { new: true })
             .then((document) =>
                 document != null
-                    ? response.send({
-                          message: `${model.modelName} has been successfully updated.`,
-                      })
+                    ? response.send(document)
                     : response
                           .status(404)
                           .send({ message: `${model.modelName} isn't found.` }),
