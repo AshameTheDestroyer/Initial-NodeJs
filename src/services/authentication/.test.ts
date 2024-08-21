@@ -23,7 +23,9 @@ export class TestAgent {
             const { email, password } = await this.Signup();
             this._token = await this.Login({ email, password });
 
-            this.subscribers.forEach((callback) => callback());
+            for (const callback of this.subscribers) {
+                await callback();
+            }
 
             this.DeleteOwnAccount();
         })();
