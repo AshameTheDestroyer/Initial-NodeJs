@@ -4,6 +4,22 @@ import { RequestHandler } from "express";
 import { UserModel } from "../user/schema";
 import { CheckPassword, HashPassword } from "../../utils";
 
+export const EmendUserBody = (
+    body: Record<string, any>,
+    hashedPassword?: string,
+) => ({
+    ...body,
+    password: hashedPassword,
+    role:
+        process.env["ALLOW_ROLE_KEY"] != null &&
+        body["allowRoleKey"] == process.env["ALLOW_ROLE_KEY"]
+            ? body["role"]
+            : undefined,
+
+    _resetToken: undefined,
+    _resetTokenExpirationDate: undefined,
+});
+
 export const Signup: RequestHandler = (request, response) =>
     UserModel.findOne({ email: request.body["email"] })
         .then((user) =>
@@ -13,19 +29,9 @@ export const Signup: RequestHandler = (request, response) =>
                       .send({ message: "Email is already taken." })
                 : HashPassword(request.body["password"]).then(
                       (hashedPassword) =>
-                          new UserModel({
-                              ...request.body,
-                              password: hashedPassword,
-                              role:
-                                  process.env["ALLOW_ROLE_KEY"] != null &&
-                                  request.body["allowRoleKey"] ==
-                                      process.env["ALLOW_ROLE_KEY"]
-                                      ? request.body["role"]
-                                      : undefined,
-
-                              _resetToken: undefined,
-                              _resetTokenExpirationDate: undefined,
-                          })
+                          new UserModel(
+                              EmendUserBody(request.body, hashedPassword),
+                          )
                               .save()
                               .then(() =>
                                   response.send({
