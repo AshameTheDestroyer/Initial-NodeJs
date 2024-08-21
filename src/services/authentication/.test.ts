@@ -88,13 +88,18 @@ export class TestAgent {
         });
     }
 
-    public static Fetch(route: string, method: RequestMethod) {
+    public static Fetch<T extends RequestMethod>(
+        route: string,
+        method: T,
+        body?: T extends "GET" ? never : Record<string, any>,
+    ) {
         return fetch(`http://localhost:3000${route}`, {
             method,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${this.Instance.token}`,
             },
+            body: method == "GET" ? undefined : JSON.stringify(body ?? {}),
         });
     }
 }
