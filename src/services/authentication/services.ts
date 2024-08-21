@@ -15,8 +15,13 @@ export const Signup: RequestHandler = (request, response) =>
                       (hashedPassword) =>
                           new UserModel({
                               ...request.body,
-                              role: undefined,
                               password: hashedPassword,
+                              role:
+                                  process.env["ALLOW_ROLE_KEY"] != null &&
+                                  request.body["allowRoleKey"] ==
+                                      process.env["ALLOW_ROLE_KEY"]
+                                      ? request.body["role"]
+                                      : undefined,
 
                               _resetToken: undefined,
                               _resetTokenExpirationDate: undefined,

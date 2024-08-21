@@ -1,7 +1,10 @@
 import expect from "expect";
 import crypto from "crypto";
 import { UserProps } from "../user";
+import { configDotenv } from "dotenv";
 import { describe, it } from "node:test";
+
+configDotenv();
 
 export class TestAgent {
     private static _instance: TestAgent;
@@ -47,7 +50,13 @@ export class TestAgent {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ name, email, password } as UserProps),
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+                role: "admin",
+                allowRoleKey: process.env["ALLOW_ROLE_KEY"],
+            } as unknown as UserProps & { allowRoleKey?: string }),
         });
 
         return { email, password };
