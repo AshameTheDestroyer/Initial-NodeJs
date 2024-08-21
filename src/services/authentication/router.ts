@@ -10,6 +10,7 @@ export const RESET_TOKEN_EXPIRATION_TIME = 60 * 60 * 1000;
 AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/signup`, Signup);
 AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/login`, Login);
 
+// UNTESTED!
 AuthenticationRouter.post(
     `${AUTHENTICATION_ROUTE}/forgot-password`,
     ForgotPassword(RESET_TOKEN_EXPIRATION_TIME, (_props) => {
@@ -24,6 +25,7 @@ AuthenticationRouter.post(
         // console.log(props.resetToken);
     }),
 );
+// UNTESTED!
 AuthenticationRouter.post(
     `${AUTHENTICATION_ROUTE}/reset-password`,
     ResetPassword,

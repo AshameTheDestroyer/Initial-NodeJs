@@ -21,18 +21,21 @@ UserRouter.get(
     ValidateAuthority("admin"),
     GetUsers,
 );
+// UNTESTED!
 UserRouter.get(`${USER_ROUTE}/:id`, ValidateAuthenticity, GetUserByID);
 
 UserRouter.patch(`${USER_ROUTE}/mine`, ValidateAuthenticity, PatchMyUser);
 
 UserRouter.delete(`${USER_ROUTE}/mine`, ValidateAuthenticity, DeleteMyUser);
 
+// UNTESTED!
 UserRouter.delete(
     USER_ROUTE,
     ValidateAuthenticity,
     ValidateAuthority("admin"),
     DeleteAllUSers,
 );
+// UNTESTED!
 UserRouter.delete(
     `${USER_ROUTE}/:id`,
     ValidateAuthenticity,

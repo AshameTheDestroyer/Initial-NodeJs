@@ -19,6 +19,7 @@ StudentRouter.post(STUDENT_ROUTE, ValidateAuthenticity, PostStudent);
 
 StudentRouter.patch(`${STUDENT_ROUTE}/:id`, ValidateAuthenticity, PatchStudent);
 
+// UNTESTED!
 StudentRouter.delete(
     STUDENT_ROUTE,
     ValidateAuthenticity,
