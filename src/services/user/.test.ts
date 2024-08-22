@@ -3,12 +3,26 @@ import { UserProps } from "./types";
 import { describe, it } from "node:test";
 import { TestAgent } from "../../classes/TestAgent";
 
-async function TestGetMyUser() {
-    const response = await TestAgent.Fetch("/user/mine", "GET");
-    expect(response.status).toEqual(200);
+async function TestGetUser() {
+    async function TestGetMyUser() {
+        const response = await TestAgent.Fetch("/user/mine", "GET");
+        expect(response.status).toEqual(200);
 
-    const json = await response.json();
-    expect(json).toHaveProperty("_id");
+        const json = await response.json();
+        expect(json).toHaveProperty("_id");
+        return json["_id"] as string;
+    }
+
+    async function TestGetUserByID(ID: string) {
+        const response = await TestAgent.Fetch(`/user/${ID}`, "GET");
+        expect(response.status).toEqual(200);
+
+        const json = await response.json();
+        expect(json).toHaveProperty("_id");
+    }
+
+    const ID = await TestGetMyUser();
+    await TestGetUserByID(ID);
 }
 
 async function TestPatchMyUser() {
@@ -30,8 +44,8 @@ async function TestGetAllUsers() {
 }
 
 TestAgent.OnAuthenticate(() =>
-    describe("GET /user/mine", () =>
-        it("My user data was fetched successfully.", TestGetMyUser)),
+    describe("GET /user/mine => /user/:id", () =>
+        it("My user data was fetched successfully.", TestGetUser)),
 );
 
 TestAgent.OnAuthenticate(() =>

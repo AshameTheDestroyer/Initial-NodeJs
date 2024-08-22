@@ -21,7 +21,6 @@ UserRouter.get(
     ValidateAuthority("admin"),
     GetUsers,
 );
-// UNTESTED!
 UserRouter.get(`${USER_ROUTE}/:id`, ValidateAuthenticity, GetUserByID);
 
 UserRouter.patch(`${USER_ROUTE}/mine`, ValidateAuthenticity, PatchMyUser);
