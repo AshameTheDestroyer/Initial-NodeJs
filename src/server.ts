@@ -5,6 +5,7 @@ import { configDotenv } from "dotenv";
 
 import { UserRouter } from "./services/user";
 import { StudentRouter } from "./services/student";
+import { SubjectRouter } from "./services/subject";
 import { AuthenticationRouter } from "./services/authentication";
 
 configDotenv();
@@ -22,4 +23,5 @@ app.use(morgan("dev"));
 
 app.use(UserRouter);
 app.use(StudentRouter);
+app.use(SubjectRouter);
 app.use(AuthenticationRouter);
