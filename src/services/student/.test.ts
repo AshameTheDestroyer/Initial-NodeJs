@@ -37,7 +37,7 @@ TestAgent.OnAuthenticate(() =>
 TestAgent.OnAuthenticate(() =>
     describe("POST/GET/PATCH/DELETE /student => /student/:id", () =>
         it(
-            "CRUD operation on student model were done successfully.",
+            "CRUD operations on student model were done successfully.",
             TestCRUDStudent,
         )),
 );
