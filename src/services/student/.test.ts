@@ -1,8 +1,8 @@
 import expect from "expect";
 import { StudentProps } from "./types";
 import { describe, it } from "node:test";
-import { TestAgent } from "../authentication";
 import { TestCRUDDocument } from "../../utils";
+import { TestAgent } from "../../classes/TestAgent";
 
 async function TestGetAllStudents() {
     const response = await TestAgent.Fetch("/student", "GET");
@@ -35,7 +35,7 @@ TestAgent.OnAuthenticate(() =>
 );
 
 TestAgent.OnAuthenticate(() =>
-    describe("POST/GET/PATCH/DELETE /student/:id", () =>
+    describe("POST/GET/PATCH/DELETE /student => /student/:id", () =>
         it(
             "CRUD operation on student model were done successfully.",
             TestCRUDStudent,

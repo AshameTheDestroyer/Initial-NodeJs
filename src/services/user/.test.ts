@@ -1,7 +1,7 @@
 import expect from "expect";
 import { UserProps } from "./types";
 import { describe, it } from "node:test";
-import { TestAgent } from "../authentication";
+import { TestAgent } from "../../classes/TestAgent";
 
 async function TestGetMyUser() {
     const response = await TestAgent.Fetch("/user/mine", "GET");
