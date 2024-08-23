@@ -36,7 +36,7 @@ export class TestAgent {
         const email = `${crypto.randomBytes(8).toString("hex")}@gmail.com`;
 
         const response = await fetch(
-            "http://localhost:3000/authentication/signup",
+            `http://localhost:${process.env["PORT"]}/authentication/signup`,
             {
                 method: "POST",
                 headers: {
@@ -58,7 +58,7 @@ export class TestAgent {
 
     private async Login(props: { email: string; password: string }) {
         const response = await fetch(
-            "http://localhost:3000/authentication/login",
+            `http://localhost:${process.env["PORT"]}/authentication/login`,
             {
                 method: "POST",
                 headers: {
@@ -75,13 +75,16 @@ export class TestAgent {
     }
 
     private async DeleteOwnAccount() {
-        const response = await fetch(`http://localhost:3000/user/mine`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this._token}`,
+        const response = await fetch(
+            `http://localhost:${process.env["PORT"]}/user/mine`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${this._token}`,
+                },
             },
-        });
+        );
         expect(response.status).toEqual(200);
     }
 
@@ -94,7 +97,7 @@ export class TestAgent {
             await this.instance.Initialize();
         }
 
-        return fetch(`http://localhost:3000${route}`, {
+        return fetch(`http://localhost:${process.env["PORT"]}${route}`, {
             method,
             headers: {
                 "Content-Type": "application/json",
