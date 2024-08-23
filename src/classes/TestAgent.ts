@@ -6,38 +6,28 @@ import { UserProps } from "../services/user";
 configDotenv();
 
 export class TestAgent {
-    private static _instance: TestAgent;
+    private static _instance: TestAgent = new TestAgent();
 
     private _token?: string;
-    private _subscribers: Array<Function> = [];
 
     public get token() {
         return this._token;
     }
 
     public static get instance() {
-        return (this._instance ??= new TestAgent());
+        return this._instance;
     }
 
-    private constructor() {
-        this.Initialize();
-    }
+    private constructor() {}
 
-    public static OnAuthenticate(
-        callback: (typeof this.instance._subscribers)[number],
-    ) {
-        this.instance._subscribers.push(callback);
-    }
-
-    private async Initialize() {
+    public async Initialize() {
         const { email, password } = await this.Signup();
         this._token = await this.Login({ email, password });
+    }
 
-        for (const callback of this._subscribers) {
-            await callback();
-        }
-
-        this.DeleteOwnAccount();
+    public async Destruct() {
+        await this.DeleteOwnAccount();
+        this._token = undefined;
     }
 
     private async Signup() {
@@ -61,7 +51,7 @@ export class TestAgent {
                 } as unknown as UserProps & { allowRoleKey?: string }),
             },
         );
-        expect(response.status).toEqual(201);
+        expect(response?.status).toEqual(201);
 
         return { email, password };
     }
@@ -95,11 +85,15 @@ export class TestAgent {
         expect(response.status).toEqual(200);
     }
 
-    public static Fetch<T extends RequestMethod>(
+    public static async Fetch<T extends RequestMethod>(
         route: string,
         method: T,
         body?: T extends "GET" ? never : Record<string, any>,
     ) {
+        if (this.instance.token == undefined) {
+            await this.instance.Initialize();
+        }
+
         return fetch(`http://localhost:3000${route}`, {
             method,
             headers: {

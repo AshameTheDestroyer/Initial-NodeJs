@@ -1,27 +1,3 @@
-import morgan from "morgan";
-import express from "express";
-import mongoose from "mongoose";
-import { configDotenv } from "dotenv";
+import { SetUpServer } from "./server-setup";
 
-import { UserRouter } from "./services/user";
-import { StudentRouter } from "./services/student";
-import { SubjectRouter } from "./services/subject";
-import { AuthenticationRouter } from "./services/authentication";
-
-configDotenv();
-
-const app = express();
-
-app.use(express.json());
-app.listen(process.env["PORT"], () =>
-    console.log(`Server is running on http://localhost:${process.env["PORT"]}`),
-);
-
-mongoose.connect(process.env["MONGODB_URI"] ?? "");
-
-app.use(morgan("dev"));
-
-app.use(UserRouter);
-app.use(StudentRouter);
-app.use(SubjectRouter);
-app.use(AuthenticationRouter);
+SetUpServer();
