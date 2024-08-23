@@ -1,61 +1,30 @@
 import expect from "expect";
+import { GenerateCRUDableDocument } from "./GenerateCRUDableDocument";
 
-export async function TestCRUDDocument(props: {
-    route: string;
-    createBody: Record<string, any>;
-    updateBody: Record<string, any>;
-    Fetch: (props: {
-        route: string;
-        method: RequestMethod;
-        body?: Record<string, any>;
-    }) => Promise<Response>;
-}) {
-    async function TestCreateDocument() {
-        const response = await props.Fetch({
-            method: "POST",
-            body: props.createBody,
-            route: `${props.route}`,
+export async function TestCRUDDocument(
+    props: Omit<Parameters<typeof GenerateCRUDableDocument>[0], `on${string}`>,
+) {
+    const { CreateDocument, ReadDocument, UpdateDocument, DeleteDocument } =
+        await GenerateCRUDableDocument({
+            ...props,
+            onCreate: async (response, json) => (
+                expect(response.status).toEqual(201),
+                expect(json).toHaveProperty("_id")
+            ),
+            onRead: async (response, json) => (
+                expect(response.status).toEqual(200),
+                expect(json).toHaveProperty("_id")
+            ),
+            onUpdate: async (response, json) => (
+                expect(response.status).toEqual(200),
+                expect(json).toHaveProperty("_id")
+            ),
+            onDelete: async (response, _json) =>
+                expect(response.status).toEqual(200),
         });
-        expect(response.status).toEqual(201);
 
-        const json = await response.json();
-        expect(json).toHaveProperty("_id");
-        return json["_id"] as string;
-    }
-
-    async function TestReadDocument(ID: string) {
-        const response = await props.Fetch({
-            method: "GET",
-            route: `${props.route}/${ID}`,
-        });
-        expect(response.status).toEqual(200);
-
-        const json = await response.json();
-        expect(json).toHaveProperty("_id");
-    }
-
-    async function TestUpdateDocument(ID: string) {
-        const response = await props.Fetch({
-            method: "PATCH",
-            body: props.updateBody,
-            route: `${props.route}/${ID}`,
-        });
-        expect(response.status).toEqual(200);
-
-        const json = await response.json();
-        expect(json).toHaveProperty("_id");
-    }
-
-    async function TestDeleteDocument(ID: string) {
-        const response = await props.Fetch({
-            method: "DELETE",
-            route: `${props.route}/${ID}`,
-        });
-        expect(response.status).toEqual(200);
-    }
-
-    const ID = await TestCreateDocument();
-    await TestReadDocument(ID);
-    await TestUpdateDocument(ID);
-    await TestDeleteDocument(ID);
+    const ID = await CreateDocument();
+    await ReadDocument(ID);
+    await UpdateDocument(ID);
+    await DeleteDocument(ID);
 }

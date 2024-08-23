@@ -10,3 +10,4 @@ export * from "./TestCRUDDocument";
 export * from "./DeleteAllDocuments";
 export * from "./DeleteDocumentByID";
 export * from "./GetPaginationOptions";
+export * from "./GenerateCRUDableDocument";
