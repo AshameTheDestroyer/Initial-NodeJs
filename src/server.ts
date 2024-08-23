@@ -1,3 +1,6 @@
+import { configDotenv } from "dotenv";
 import { SetUpServer } from "./server-setup";
 
-SetUpServer();
+configDotenv();
+
+SetUpServer(Number(process.env["PORT"]));

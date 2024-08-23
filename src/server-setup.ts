@@ -10,12 +10,10 @@ import { AuthenticationRouter } from "./services/authentication";
 
 configDotenv();
 
-export async function SetUpServer() {
+export async function SetUpServer(port: number) {
     const app = express();
-    const server = app.listen(process.env["PORT"], () =>
-        console.log(
-            `Server is running on http://localhost:${process.env["PORT"]}`,
-        ),
+    const server = app.listen(`${port}`, () =>
+        console.log(`Server is running on http://localhost:${port}`),
     );
 
     app.use(morgan("dev"));
