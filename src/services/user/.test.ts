@@ -1,6 +1,4 @@
-import expect from "expect";
 import { UserProps } from "./types";
-import { describe, it } from "node:test";
 import { TestAgent } from "../../classes/TestAgent";
 
 async function TestGetUser() {
@@ -43,17 +41,11 @@ async function TestGetAllUsers() {
     expect(json).toHaveProperty("data");
 }
 
-TestAgent.OnAuthenticate(() =>
-    describe("GET /user/mine => /user/:id", () =>
-        it("My user data was fetched successfully.", TestGetUser)),
-);
+describe("GET /user/mine => /user/:id", () =>
+    test("My user data was fetched successfully.", TestGetUser));
 
-TestAgent.OnAuthenticate(() =>
-    describe("PATCH /user/mine", () =>
-        it("My user data was patched successfully.", TestPatchMyUser)),
-);
+describe("PATCH /user/mine", () =>
+    test("My user data was patched successfully.", TestPatchMyUser));
 
-TestAgent.OnAuthenticate(() =>
-    describe("GET /user", () =>
-        it("All users were fetched successfully.", TestGetAllUsers)),
-);
+describe("GET /user", () =>
+    test("All users were fetched successfully.", TestGetAllUsers));

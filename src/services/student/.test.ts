@@ -1,13 +1,10 @@
-import expect from "expect";
 import { StudentProps } from "./types";
-import { describe, it } from "node:test";
 import { TestCRUDDocument } from "../../utils";
 import { TestAgent } from "../../classes/TestAgent";
 
 async function TestGetAllStudents() {
     const response = await TestAgent.Fetch("/student", "GET");
     expect(response.status).toEqual(200);
-
     const json = await response.json();
     expect(json).toHaveProperty("data");
 }
@@ -29,15 +26,11 @@ async function TestCRUDStudent() {
     });
 }
 
-TestAgent.OnAuthenticate(() =>
-    describe("GET /student", () =>
-        it("All students were fetched successfully.", TestGetAllStudents)),
-);
+describe("GET /student", () =>
+    test("All students were fetched successfully.", TestGetAllStudents));
 
-TestAgent.OnAuthenticate(() =>
-    describe("POST/GET/PATCH/DELETE /student => /student/:id", () =>
-        it(
-            "CRUD operations on student model were done successfully.",
-            TestCRUDStudent,
-        )),
-);
+describe("POST/GET/PATCH/DELETE /student => /student/:id", () =>
+    test(
+        "CRUD operations on student model were done successfully.",
+        TestCRUDStudent,
+    ));
