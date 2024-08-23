@@ -1,13 +1,13 @@
 import nodemailer, { Transporter } from "nodemailer";
 
 export class EmailManager {
-    private static _instance: EmailManager;
+    private static _instance: EmailManager = new EmailManager();
 
     private _email: string;
     private _transporter: Transporter;
 
     public static get instance() {
-        return (this._instance ??= new EmailManager());
+        return this._instance;
     }
 
     private constructor() {
