@@ -1,6 +1,8 @@
+import mongoose from "mongoose";
 import { StudentProps } from "./types";
-import { TestCRUDDocument } from "../../utils";
+import { SubjectProps } from "../subject";
 import { TestAgent } from "../../classes/TestAgent";
+import { TestCRUDDocument, GenerateCRUDableDocument } from "../../utils";
 
 async function TestGetAllStudents() {
     const response = await TestAgent.Fetch("/student", "GET");
@@ -10,6 +12,18 @@ async function TestGetAllStudents() {
 }
 
 async function TestCRUDStudent() {
+    const CRUDableSubject = await GenerateCRUDableDocument({
+        route: "/subject",
+        Fetch: (props) =>
+            TestAgent.Fetch(props.route, props.method, props.body),
+        createBody: {
+            name: "Test Subject",
+            description: "Lorem ipsum.",
+        } as SubjectProps,
+    });
+
+    const subjectID = await CRUDableSubject.CreateDocument();
+
     await TestCRUDDocument({
         route: "/student",
         Fetch: (props) =>
@@ -20,10 +34,12 @@ async function TestCRUDStudent() {
         createBody: {
             year: 3,
             rollNumber: 3,
-            subjects: ["Test"],
             name: "Test Student",
+            subjects: [new mongoose.Types.ObjectId(subjectID)],
         } as StudentProps,
     });
+
+    await CRUDableSubject.DeleteDocument(subjectID);
 }
 
 describe("GET /student", () =>
