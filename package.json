@@ -5,8 +5,8 @@
     "scripts": {
         "build": "tsc",
         "dev": "nodemon src/server.ts",
-        "test": "jest --testTimeout=10000",
-        "start": "tsc && node dist/server.js"
+        "start": "tsc && node dist/server.js",
+        "test": "jest --testTimeout=10000 --verbose true --detectOpenHandles"
     },
     "keywords": [],
     "author": "",
