@@ -12,5 +12,9 @@ export function DeleteAllDocuments<T>(model: Model<T>): RequestHandler {
                         ` ${model.modelName.toLowerCase()}(s) has been successfully deleted.`,
                 }),
             )
-            .catch((error) => response.status(500).send(error));
+            .catch(
+                (error) => (
+                    console.error(error), response.status(500).send(error)
+                ),
+            );
 }

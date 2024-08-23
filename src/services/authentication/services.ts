@@ -41,7 +41,9 @@ export const Signup: RequestHandler = (request, response) =>
                               ),
                   ),
         )
-        .catch((error) => response.status(500).send(error));
+        .catch(
+            (error) => (console.error(error), response.status(500).send(error)),
+        );
 
 export const Login: RequestHandler = (request, response) =>
     UserModel.findOne({ email: request.body["email"] })
@@ -64,7 +66,9 @@ export const Login: RequestHandler = (request, response) =>
                                 }),
                   ),
         )
-        .catch((error) => response.status(500).send(error));
+        .catch(
+            (error) => (console.error(error), response.status(500).send(error)),
+        );
 
 export const ForgotPassword: (
     resetTokenExpirationTime: number,
@@ -98,6 +102,7 @@ export const ForgotPassword: (
                 message: "Password reset token has been sent.",
             });
         } catch (error) {
+            console.error(error);
             return response.status(500).send(error);
         }
     };
@@ -126,6 +131,7 @@ export const ResetPassword: RequestHandler = async (request, response) => {
             message: "Password has been reset successfully.",
         });
     } catch (error) {
+        console.error(error);
         return response.status(500).send(error);
     }
 };

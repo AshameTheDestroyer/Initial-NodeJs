@@ -18,7 +18,9 @@ export const GetMyUser: RequestHandler = (request, response) => {
                 ? response.send(user)
                 : response.status(404).send({ message: "User isn't found." }),
         )
-        .catch((error) => response.status(500).send(error));
+        .catch(
+            (error) => (console.error(error), response.status(500).send(error)),
+        );
 };
 
 export const GetUsers = GetDocuments(
@@ -48,7 +50,9 @@ export const PatchMyUser: RequestHandler = (request, response) => {
                 ? response.send(user)
                 : response.status(404).send({ message: "User isn't found." }),
         )
-        .catch((error) => response.status(500).send(error));
+        .catch(
+            (error) => (console.error(error), response.status(500).send(error)),
+        );
 };
 
 export const DeleteMyUser: RequestHandler = (request, response) => {
@@ -62,7 +66,9 @@ export const DeleteMyUser: RequestHandler = (request, response) => {
                       message: "Your user has been deleted successfully.",
                   }),
         )
-        .catch((error) => response.status(500).send(error));
+        .catch(
+            (error) => (console.error(error), response.status(500).send(error)),
+        );
 };
 
 export const DeleteAllUSers = DeleteAllDocuments(UserModel);

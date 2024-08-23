@@ -26,4 +26,8 @@ export const ValidateAuthority: (
                       })
                     : next(),
             )
-            .catch((error) => response.status(500).send(error));
+            .catch(
+                (error) => (
+                    console.error(error), response.status(500).send(error)
+                ),
+            );

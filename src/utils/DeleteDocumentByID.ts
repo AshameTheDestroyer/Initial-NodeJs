@@ -14,5 +14,9 @@ export function DeleteDocumentByID<T>(model: Model<T>): RequestHandlerWithID {
                           .status(404)
                           .send({ message: `${model.modelName} isn't found.` }),
             )
-            .catch((error) => response.status(500).send(error));
+            .catch(
+                (error) => (
+                    console.error(error), response.status(500).send(error)
+                ),
+            );
 }
