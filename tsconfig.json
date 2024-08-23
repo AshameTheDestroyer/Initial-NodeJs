@@ -25,6 +25,7 @@
     "exclude": [
         "**/*.test.ts",
         "node_modules",
-        "src/frontend.ts"
+        "src/frontend.ts",
+        "src/test-setup.ts",
     ]
 }
