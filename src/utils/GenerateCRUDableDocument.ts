@@ -1,12 +1,10 @@
+import { TestAgent } from "../classes/TestAgent";
+
 export async function GenerateCRUDableDocument(props: {
     route: string;
+    Fetch: typeof TestAgent.Fetch;
     createBody: Record<string, any>;
     updateBody?: Record<string, any>;
-    Fetch: (props: {
-        route: string;
-        method: RequestMethod;
-        body?: Record<string, any>;
-    }) => Promise<Response>;
     onRead?: (response: Response, json: Record<string, any>) => void;
     onCreate?: (response: Response, json: Record<string, any>) => void;
     onUpdate?: (response: Response, json: Record<string, any>) => void;

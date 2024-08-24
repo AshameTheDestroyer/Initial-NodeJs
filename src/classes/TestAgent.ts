@@ -1,9 +1,16 @@
 import expect from "expect";
 import crypto from "crypto";
 import { configDotenv } from "dotenv";
+import { RequestMethod } from "../types";
 import { UserProps } from "../services/user";
 
 configDotenv();
+
+type FetchProps<T extends RequestMethod> = {
+    method: T;
+    route: string;
+    requireAuthentication?: boolean;
+};
 
 export class TestAgent {
     private static _instance: TestAgent = new TestAgent();
@@ -35,38 +42,30 @@ export class TestAgent {
         const password = "12345678";
         const email = `${crypto.randomBytes(8).toString("hex")}@gmail.com`;
 
-        const response = await fetch(
-            `http://localhost:${process.env["TEST_PORT"]}/authentication/signup`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    role: "admin",
-                    allowRoleKey: process.env["ALLOW_ROLE_KEY"],
-                } as unknown as UserProps & { allowRoleKey?: string }),
-            },
-        );
+        const response = await TestAgent.Fetch({
+            method: "POST",
+            requireAuthentication: false,
+            route: "/authentication/signup",
+            body: {
+                name,
+                email,
+                password,
+                role: "admin",
+                allowRoleKey: process.env["ALLOW_ROLE_KEY"],
+            } as UserProps & { allowRoleKey?: string },
+        });
         expect(response?.status).toEqual(201);
 
         return { email, password };
     }
 
     private async Login(props: { email: string; password: string }) {
-        const response = await fetch(
-            `http://localhost:${process.env["TEST_PORT"]}/authentication/login`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(props as UserProps),
-            },
-        );
+        const response = await TestAgent.Fetch({
+            method: "POST",
+            body: props as UserProps,
+            requireAuthentication: false,
+            route: "/authentication/login",
+        });
         expect(response.status).toEqual(200);
 
         const json = await response.json();
@@ -75,25 +74,21 @@ export class TestAgent {
     }
 
     private async DeleteOwnAccount() {
-        const response = await fetch(
-            `http://localhost:${process.env["TEST_PORT"]}/user/mine`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${this._token}`,
-                },
-            },
-        );
+        const response = await TestAgent.Fetch({
+            method: "DELETE",
+            route: "/user/mine",
+        });
         expect(response.status).toEqual(200);
     }
 
     public static async Fetch<T extends RequestMethod>(
-        route: string,
-        method: T,
-        body?: T extends "GET" ? never : Record<string, any>,
+        props: T extends "GET"
+            ? FetchProps<T>
+            : FetchProps<T> & { body?: Record<string, any> },
     ) {
-        if (this.instance.token == undefined) {
+        const { method, route, requireAuthentication = true } = props;
+
+        if (requireAuthentication && this.instance.token == undefined) {
             await this.instance.Initialize();
         }
 
@@ -103,7 +98,8 @@ export class TestAgent {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${this.instance.token}`,
             },
-            body: method == "GET" ? undefined : JSON.stringify(body ?? {}),
+            body:
+                method != "GET" ? JSON.stringify(props.body ?? {}) : undefined,
         });
     }
 }

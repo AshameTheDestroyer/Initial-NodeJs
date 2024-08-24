@@ -5,7 +5,10 @@ import { TestAgent } from "../../classes/TestAgent";
 import { TestCRUDDocument, GenerateCRUDableDocument } from "../../utils";
 
 async function TestGetAllStudents() {
-    const response = await TestAgent.Fetch("/student", "GET");
+    const response = await TestAgent.Fetch({
+        method: "GET",
+        route: "/student",
+    });
     expect(response.status).toEqual(200);
     const json = await response.json();
     expect(json).toHaveProperty("data");
@@ -14,8 +17,7 @@ async function TestGetAllStudents() {
 async function TestCRUDStudent() {
     const CRUDableSubject = await GenerateCRUDableDocument({
         route: "/subject",
-        Fetch: (props) =>
-            TestAgent.Fetch(props.route, props.method, props.body),
+        Fetch: (props) => TestAgent.Fetch(props),
         createBody: {
             name: "Test Subject",
             description: "Lorem ipsum.",
@@ -26,8 +28,7 @@ async function TestCRUDStudent() {
 
     await TestCRUDDocument({
         route: "/student",
-        Fetch: (props) =>
-            TestAgent.Fetch(props.route, props.method, props.body),
+        Fetch: (props) => TestAgent.Fetch(props),
         updateBody: {
             name: "Updated Test Student",
         } as StudentProps,

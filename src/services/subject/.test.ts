@@ -3,7 +3,10 @@ import { TestCRUDDocument } from "../../utils";
 import { TestAgent } from "../../classes/TestAgent";
 
 async function TestGetAllSubjects() {
-    const response = await TestAgent.Fetch("/subject", "GET");
+    const response = await TestAgent.Fetch({
+        method: "GET",
+        route: "/subject",
+    });
     expect(response.status).toEqual(200);
 
     const json = await response.json();
@@ -13,8 +16,7 @@ async function TestGetAllSubjects() {
 async function TestCRUDSubject() {
     await TestCRUDDocument({
         route: "/subject",
-        Fetch: (props) =>
-            TestAgent.Fetch(props.route, props.method, props.body),
+        Fetch: (props) => TestAgent.Fetch(props),
         updateBody: {
             name: "Updated Test Subject",
         } as SubjectProps,

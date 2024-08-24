@@ -3,7 +3,10 @@ import { TestAgent } from "../../classes/TestAgent";
 
 async function TestGetUser() {
     async function TestGetMyUser() {
-        const response = await TestAgent.Fetch("/user/mine", "GET");
+        const response = await TestAgent.Fetch({
+            method: "GET",
+            route: "/user/mine",
+        });
         expect(response.status).toEqual(200);
 
         const json = await response.json();
@@ -12,7 +15,10 @@ async function TestGetUser() {
     }
 
     async function TestGetUserByID(ID: string) {
-        const response = await TestAgent.Fetch(`/user/${ID}`, "GET");
+        const response = await TestAgent.Fetch({
+            method: "GET",
+            route: `/user/${ID}`,
+        });
         expect(response.status).toEqual(200);
 
         const json = await response.json();
@@ -24,9 +30,11 @@ async function TestGetUser() {
 }
 
 async function TestPatchMyUser() {
-    const response = await TestAgent.Fetch("/user/mine", "PATCH", {
-        name: "Updated Test Agent",
-    } as UserProps);
+    const response = await TestAgent.Fetch({
+        method: "PATCH",
+        route: "/user/mine",
+        body: { name: "Updated Test Agent" } as UserProps,
+    });
     expect(response.status).toEqual(200);
 
     const json = await response.json();
@@ -34,7 +42,10 @@ async function TestPatchMyUser() {
 }
 
 async function TestGetAllUsers() {
-    const response = await TestAgent.Fetch("/user", "GET");
+    const response = await TestAgent.Fetch({
+        method: "GET",
+        route: "/user",
+    });
     expect(response.status).toEqual(200);
 
     const json = await response.json();
