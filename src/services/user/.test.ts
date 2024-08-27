@@ -7,10 +7,11 @@ async function TestGetUser() {
             method: "GET",
             route: "/user/mine",
         });
-        expect(response.status).toEqual(200);
-
         const json = await response.json();
+
+        expect(response.status).toEqual(200);
         expect(json).toHaveProperty("_id");
+
         return json["_id"] as string;
     }
 
@@ -19,9 +20,9 @@ async function TestGetUser() {
             method: "GET",
             route: `/user/${ID}`,
         });
-        expect(response.status).toEqual(200);
-
         const json = await response.json();
+
+        expect(response.status).toEqual(200);
         expect(json).toHaveProperty("_id");
     }
 
@@ -35,9 +36,9 @@ async function TestPatchMyUser() {
         route: "/user/mine",
         body: { name: "Updated Test Agent" } as UserProps,
     });
-    expect(response.status).toEqual(200);
-
     const json = await response.json();
+
+    expect(response.status).toEqual(200);
     expect(json).toHaveProperty("_id");
 }
 
@@ -46,9 +47,9 @@ async function TestGetAllUsers() {
         method: "GET",
         route: "/user",
     });
-    expect(response.status).toEqual(200);
-
     const json = await response.json();
+
+    expect(response.status).toEqual(200);
     expect(json).toHaveProperty("data");
 }
 

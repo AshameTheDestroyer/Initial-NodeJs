@@ -7,9 +7,9 @@ async function TestGetAllSubjects() {
         method: "GET",
         route: "/subject",
     });
-    expect(response.status).toEqual(200);
-
     const json = await response.json();
+
+    expect(response.status).toEqual(200);
     expect(json).toHaveProperty("data");
 }
 
