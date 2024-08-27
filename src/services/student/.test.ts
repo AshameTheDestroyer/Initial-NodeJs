@@ -23,6 +23,12 @@ async function TestCRUDStudent() {
             name: "Test Subject",
             description: "Lorem ipsum.",
         } as SubjectProps,
+        onCreate: async (response, json) => (
+            expect(response.status).toEqual(201),
+            expect(json).toHaveProperty("_id")
+        ),
+        onDelete: async (response, _json) =>
+            expect(response.status).toEqual(200),
     });
 
     const subjectID = await CRUDableSubject.CreateDocument();
