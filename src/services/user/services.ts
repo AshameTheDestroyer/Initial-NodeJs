@@ -10,7 +10,7 @@ import {
 
 export const GetMyUser: RequestHandler = (request, response) => {
     UserModel.findById({
-        _id: (request as typeof request & { userId: string }).userId,
+        _id: (request as typeof request & { userID: string }).userID,
     })
         .select(["-password", "-_resetToken", "-_resetTokenExpirationDate"])
         .then((user) =>
@@ -39,7 +39,7 @@ export const GetUserByID = GetDocumentByID(
 export const PatchMyUser: RequestHandler = (request, response) => {
     UserModel.findByIdAndUpdate(
         {
-            _id: (request as typeof request & { userId: string }).userId,
+            _id: (request as typeof request & { userID: string }).userID,
         },
         { ...EmendUserBody(request.body), email: undefined },
         { new: true },
@@ -57,7 +57,7 @@ export const PatchMyUser: RequestHandler = (request, response) => {
 
 export const DeleteMyUser: RequestHandler = (request, response) => {
     UserModel.findByIdAndDelete({
-        _id: (request as typeof request & { userId: string }).userId,
+        _id: (request as typeof request & { userID: string }).userID,
     })
         .then((user) =>
             user == null

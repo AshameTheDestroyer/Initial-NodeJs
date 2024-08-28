@@ -27,8 +27,8 @@ export const ValidateRateLimit: (props?: {
                   userModel: UserModel,
                   requiredRoles: ["admin"],
                   onUnauthorized: () => rateLimit(request, response, next),
-                  userID: (request as typeof request & { userId: string })[
-                      "userId"
+                  userID: (request as typeof request & { userID: string })[
+                      "userID"
                   ],
                   onNotFound: () =>
                       response

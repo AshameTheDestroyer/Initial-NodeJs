@@ -17,10 +17,10 @@ export const ValidateAuthenticity: RequestHandler = (
             process.env["JWT_KEY"]!,
         );
 
-        const _request = request as typeof request & { userId: string };
-        const _payload = payload as (JwtPayload | string) & { userId: string };
+        const _request = request as typeof request & { userID: string };
+        const _payload = payload as (JwtPayload | string) & { userID: string };
 
-        _request["userId"] = _payload["userId"];
+        _request["userID"] = _payload["userID"];
 
         next();
     } catch {

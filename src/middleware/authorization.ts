@@ -11,7 +11,7 @@ export const ValidateAuthority: (
             requiredRoles,
             onAuthorized: next,
             userModel: UserModel,
-            userID: (request as typeof request & { userId: string })["userId"],
+            userID: (request as typeof request & { userID: string })["userID"],
             onNotFound: () =>
                 response.status(404).send({ message: "User isn't found." }),
             onUnauthorized: (requiredRoles) =>

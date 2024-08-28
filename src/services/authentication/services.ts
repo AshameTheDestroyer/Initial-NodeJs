@@ -57,7 +57,7 @@ export const Login: RequestHandler = (request, response) =>
                           isPasswordCorrect
                               ? response.send({
                                     token: Jwt.sign(
-                                        { userId: user._id },
+                                        { userID: user._id },
                                         process.env["JWT_KEY"]!,
                                     ),
                                 })
