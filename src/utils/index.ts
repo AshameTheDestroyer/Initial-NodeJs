@@ -1,3 +1,4 @@
+export * from "./CheckRole";
 export * from "./PostDocument";
 export * from "./GetDocuments";
 export * from "./HashPassword";
