@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { ValidateAuthenticity, ValidateAuthority } from "../../middleware";
+import {
+    ValidateRateLimit,
+    ValidateAuthority,
+    ValidateAuthenticity,
+} from "../../middleware";
 import {
     GetStudents,
     PostStudent,
@@ -12,12 +16,32 @@ import {
 export const STUDENT_ROUTE = "/student";
 export const StudentRouter = Router();
 
-StudentRouter.get(STUDENT_ROUTE, ValidateAuthenticity, GetStudents);
-StudentRouter.get(`${STUDENT_ROUTE}/:id`, ValidateAuthenticity, GetStudentByID);
+StudentRouter.get(
+    STUDENT_ROUTE,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    GetStudents,
+);
+StudentRouter.get(
+    `${STUDENT_ROUTE}/:id`,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    GetStudentByID,
+);
 
-StudentRouter.post(STUDENT_ROUTE, ValidateAuthenticity, PostStudent);
+StudentRouter.post(
+    STUDENT_ROUTE,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    PostStudent,
+);
 
-StudentRouter.patch(`${STUDENT_ROUTE}/:id`, ValidateAuthenticity, PatchStudent);
+StudentRouter.patch(
+    `${STUDENT_ROUTE}/:id`,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    PatchStudent,
+);
 
 // UNTESTED!
 StudentRouter.delete(
@@ -29,5 +53,6 @@ StudentRouter.delete(
 StudentRouter.delete(
     `${STUDENT_ROUTE}/:id`,
     ValidateAuthenticity,
+    ValidateRateLimit(),
     DeleteStudentByID,
 );

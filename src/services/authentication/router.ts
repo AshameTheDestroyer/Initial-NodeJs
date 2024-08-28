@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ValidateRateLimit } from "../../middleware";
 // import { EmailManager } from "../../third-party/EmailManager";
 import { Login, Signup, ForgotPassword, ResetPassword } from "./services";
 
@@ -6,6 +7,11 @@ export const AUTHENTICATION_ROUTE = "/authentication";
 export const AuthenticationRouter = Router();
 
 export const RESET_TOKEN_EXPIRATION_TIME = 60 * 60 * 1000;
+
+AuthenticationRouter.use(
+    AUTHENTICATION_ROUTE,
+    ValidateRateLimit({ checkRole: false }),
+);
 
 AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/signup`, Signup);
 AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/login`, Login);

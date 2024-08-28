@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { ValidateAuthenticity, ValidateAuthority } from "../../middleware";
+import {
+    ValidateRateLimit,
+    ValidateAuthority,
+    ValidateAuthenticity,
+} from "../../middleware";
 import {
     GetSubjects,
     PostSubject,
@@ -12,12 +16,32 @@ import {
 export const SUBJECT_ROUTE = "/subject";
 export const SubjectRouter = Router();
 
-SubjectRouter.get(SUBJECT_ROUTE, ValidateAuthenticity, GetSubjects);
-SubjectRouter.get(`${SUBJECT_ROUTE}/:id`, ValidateAuthenticity, GetSubjectByID);
+SubjectRouter.get(
+    SUBJECT_ROUTE,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    GetSubjects,
+);
+SubjectRouter.get(
+    `${SUBJECT_ROUTE}/:id`,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    GetSubjectByID,
+);
 
-SubjectRouter.post(SUBJECT_ROUTE, ValidateAuthenticity, PostSubject);
+SubjectRouter.post(
+    SUBJECT_ROUTE,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    PostSubject,
+);
 
-SubjectRouter.patch(`${SUBJECT_ROUTE}/:id`, ValidateAuthenticity, PatchSubject);
+SubjectRouter.patch(
+    `${SUBJECT_ROUTE}/:id`,
+    ValidateAuthenticity,
+    ValidateRateLimit(),
+    PatchSubject,
+);
 
 // UNTESTED!
 SubjectRouter.delete(
@@ -29,5 +53,6 @@ SubjectRouter.delete(
 SubjectRouter.delete(
     `${SUBJECT_ROUTE}/:id`,
     ValidateAuthenticity,
+    ValidateRateLimit(),
     DeleteSubjectByID,
 );
