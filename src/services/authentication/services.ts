@@ -16,6 +16,7 @@ export const EmendUserBody = (
             ? body["role"]
             : undefined,
 
+    _loginToken: undefined,
     _resetToken: undefined,
     _resetTokenExpirationDate: undefined,
 });
@@ -53,22 +54,48 @@ export const Login: RequestHandler = (request, response) =>
                       .status(401)
                       .send({ message: "Email isn't registered." })
                 : CheckPassword(request.body["password"], user.password).then(
-                      (isPasswordCorrect) =>
-                          isPasswordCorrect
-                              ? response.send({
-                                    token: Jwt.sign(
-                                        { userID: user._id },
-                                        process.env["JWT_KEY"]!,
-                                    ),
-                                })
-                              : response.status(401).send({
-                                    message: `Password is incorrect.`,
-                                }),
+                      async (isPasswordCorrect) => {
+                          if (!isPasswordCorrect) {
+                              return response.status(401).send({
+                                  message: `Password is incorrect.`,
+                              });
+                          }
+
+                          const token = Jwt.sign(
+                              { userID: user._id },
+                              process.env["JWT_KEY"]!,
+                          );
+                          user._loginToken = token;
+                          await user.save();
+
+                          return response.send({ token });
+                      },
                   ),
         )
         .catch(
             (error) => (console.error(error), response.status(500).send(error)),
         );
+
+export const Logout: RequestHandler = async (request, response) => {
+    try {
+        const _request = request as typeof request & { userID: string };
+        const user = await UserModel.findById(_request["userID"]);
+
+        if (user == null) {
+            return response.status(404).send({ message: "User isn't found." });
+        }
+
+        user._loginToken = undefined;
+        await user.save();
+
+        return response.status(201).send({
+            message: "User has logged out successfully.",
+        });
+    } catch (error) {
+        console.error(error);
+        return response.status(500).send(error);
+    }
+};
 
 export const ForgotPassword: (
     resetTokenExpirationTime: number,

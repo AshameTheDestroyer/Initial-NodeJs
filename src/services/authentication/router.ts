@@ -1,7 +1,13 @@
 import { Router } from "express";
-import { ValidateRateLimit } from "../../middleware";
+import { ValidateAuthenticity, ValidateRateLimit } from "../../middleware";
 // import { EmailManager } from "../../third-party/EmailManager";
-import { Login, Signup, ForgotPassword, ResetPassword } from "./services";
+import {
+    Login,
+    Signup,
+    Logout,
+    ForgotPassword,
+    ResetPassword,
+} from "./services";
 
 export const AUTHENTICATION_ROUTE = "/authentication";
 export const AuthenticationRouter = Router();
@@ -13,8 +19,13 @@ AuthenticationRouter.use(
     ValidateRateLimit({ checkRole: false }),
 );
 
-AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/signup`, Signup);
 AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/login`, Login);
+AuthenticationRouter.post(`${AUTHENTICATION_ROUTE}/signup`, Signup);
+AuthenticationRouter.post(
+    `${AUTHENTICATION_ROUTE}/logout`,
+    ValidateAuthenticity,
+    Logout,
+);
 
 // UNTESTED!
 AuthenticationRouter.post(
