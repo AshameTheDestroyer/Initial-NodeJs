@@ -12,7 +12,12 @@ export const GetMyUser: RequestHandler = (request, response) => {
     UserModel.findById({
         _id: (request as typeof request & { userID: string }).userID,
     })
-        .select(["-password", "-_resetToken", "-_resetTokenExpirationDate"])
+        .select([
+            "-password",
+            "-_loginToken",
+            "-_resetToken",
+            "-_resetTokenExpirationDate",
+        ])
         .then((user) =>
             user != null
                 ? response.send(user)
@@ -26,12 +31,14 @@ export const GetMyUser: RequestHandler = (request, response) => {
 export const GetUsers = GetDocuments(
     UserModel,
     "-password",
+    "-_loginToken",
     "-_resetToken",
     "-_resetTokenExpirationDate",
 );
 export const GetUserByID = GetDocumentByID(
     UserModel,
     "-password",
+    "-_loginToken",
     "-_resetToken",
     "-_resetTokenExpirationDate",
 );
@@ -44,7 +51,12 @@ export const PatchMyUser: RequestHandler = (request, response) => {
         { ...EmendUserBody(request.body), email: undefined },
         { new: true },
     )
-        .select(["-password", "-_resetToken", "-_resetTokenExpirationDate"])
+        .select([
+            "-password",
+            "-_loginToken",
+            "-_resetToken",
+            "-_resetTokenExpirationDate",
+        ])
         .then((user) =>
             user != null
                 ? response.send(user)
