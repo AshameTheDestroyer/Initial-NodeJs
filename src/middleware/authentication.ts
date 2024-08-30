@@ -25,17 +25,13 @@ export const ValidateAuthenticity: RequestHandler = async (
         if (user == null) {
             return response.status(404).send({ message: "User isn't found." });
         }
-        if (user._loginToken == null) {
-            return response
-                .status(401)
-                .send({ message: "User isn't logged in." });
-        }
-        if (user._loginToken != token) {
+        if (user._loginToken == null || user._loginToken != token) {
             return response.status(401).send({ message: "Token isn't valid." });
         }
 
         next();
-    } catch {
-        response.status(401).send({ message: "Token isn't valid." });
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
     }
 };
