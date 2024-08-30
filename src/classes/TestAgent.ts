@@ -16,6 +16,9 @@ export class TestAgent {
     private static _instance: TestAgent = new TestAgent();
 
     private _token?: string;
+    private _name = "Test Agent";
+    private _password = "12345678";
+    private _email = `${crypto.randomBytes(8).toString("hex")}@gmail.com`;
 
     public get token() {
         return this._token;
@@ -28,44 +31,43 @@ export class TestAgent {
     private constructor() {}
 
     public async Initialize() {
-        const { email, password } = await this.Signup();
-        this._token = await this.Login({ email, password });
+        await this.Signup();
+        this._token = await this.Login();
     }
 
     public async Destruct() {
+        await this.Logout();
+        this._token = await this.Login();
         await this.DeleteOwnAccount();
         this._token = undefined;
     }
 
     private async Signup() {
-        const name = "Test Agent";
-        const password = "12345678";
-        const email = `${crypto.randomBytes(8).toString("hex")}@gmail.com`;
-
         const response = await TestAgent.Fetch({
             method: "POST",
             requireAuthentication: false,
             route: "/authentication/signup",
             body: {
-                name,
-                email,
-                password,
                 role: "admin",
+                name: this._name,
+                email: this._email,
+                password: this._password,
                 allowRoleKey: process.env["ALLOW_ROLE_KEY"],
             } as UserProps & { allowRoleKey?: string },
         });
 
         expect(response?.status).toEqual(201);
-
-        return { email, password };
     }
 
-    private async Login(props: { email: string; password: string }) {
+    private async Login() {
         const response = await TestAgent.Fetch({
             method: "POST",
-            body: props as UserProps,
             requireAuthentication: false,
             route: "/authentication/login",
+            body: {
+                email: this._email,
+                password: this._password,
+            } as UserProps,
         });
         const json = await response.json();
 
@@ -73,6 +75,14 @@ export class TestAgent {
         expect(json).toHaveProperty("token");
 
         return json["token"] as string;
+    }
+
+    private async Logout() {
+        const response = await TestAgent.Fetch({
+            method: "POST",
+            route: "/authentication/logout",
+        });
+        expect(response.status).toEqual(201);
     }
 
     private async DeleteOwnAccount() {
