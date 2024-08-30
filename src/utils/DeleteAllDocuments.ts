@@ -9,7 +9,7 @@ export function DeleteAllDocuments<T>(model: Model<T>): RequestHandler {
                 response.send({
                     message:
                         result.deletedCount +
-                        ` ${model.modelName.toLowerCase()}(s) has been successfully deleted.`,
+                        ` ${model.modelName.toLowerCase()}(s) has been deleted successfully.`,
                 }),
             )
             .catch(

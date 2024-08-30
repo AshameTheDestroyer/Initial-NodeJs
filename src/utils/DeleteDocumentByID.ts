@@ -8,7 +8,7 @@ export function DeleteDocumentByID<T>(model: Model<T>): RequestHandlerWithID {
             .then((document) =>
                 document != null
                     ? response.send({
-                          message: `${model.modelName} has been successfully deleted.`,
+                          message: `${model.modelName} has been deleted successfully.`,
                       })
                     : response
                           .status(404)
