@@ -21,60 +21,59 @@ export const EmendUserBody = (
     _resetTokenExpirationDate: undefined,
 });
 
-export const Signup: RequestHandler = (request, response) =>
-    UserModel.findOne({ email: request.body["email"] })
-        .then((user) =>
-            user != null
-                ? response
-                      .status(400)
-                      .send({ message: "Email is already taken." })
-                : HashPassword(request.body["password"]).then(
-                      (hashedPassword) =>
-                          new UserModel(
-                              EmendUserBody(request.body, hashedPassword),
-                          )
-                              .save()
-                              .then(() =>
-                                  response.status(201).send({
-                                      message:
-                                          "User has signed up successfully.",
-                                  }),
-                              ),
-                  ),
-        )
-        .catch(
-            (error) => (console.error(error), response.status(500).send(error)),
+export const Signup: RequestHandler = async (request, response) => {
+    try {
+        const user = await UserModel.findOne({ email: request.body["email"] });
+        if (user != null) {
+            return response
+                .status(400)
+                .send({ message: "Email is already taken." });
+        }
+
+        const hashedPassword = await HashPassword(request.body["password"]);
+        await new UserModel(EmendUserBody(request.body, hashedPassword)).save();
+
+        return response.status(201).send({
+            message: "User has signed up successfully.",
+        });
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
+};
+
+export const Login: RequestHandler = async (request, response) => {
+    try {
+        const user = await UserModel.findOne({ email: request.body["email"] });
+        if (user == null) {
+            return response
+                .status(401)
+                .send({ message: "Email isn't registered." });
+        }
+
+        const isPasswordCorrect = await CheckPassword(
+            request.body["password"],
+            user.password,
         );
 
-export const Login: RequestHandler = (request, response) =>
-    UserModel.findOne({ email: request.body["email"] })
-        .then((user) =>
-            user == null
-                ? response
-                      .status(401)
-                      .send({ message: "Email isn't registered." })
-                : CheckPassword(request.body["password"], user.password).then(
-                      async (isPasswordCorrect) => {
-                          if (!isPasswordCorrect) {
-                              return response.status(401).send({
-                                  message: `Password is incorrect.`,
-                              });
-                          }
+        if (!isPasswordCorrect) {
+            return response.status(401).send({
+                message: `Password is incorrect.`,
+            });
+        }
 
-                          const token = Jwt.sign(
-                              { userID: user._id },
-                              process.env["JWT_KEY"]!,
-                          );
-                          user._loginToken = token;
-                          await user.save();
+        const token = (user._loginToken = Jwt.sign(
+            { userID: user._id },
+            process.env["JWT_KEY"]!,
+        ));
 
-                          return response.send({ token });
-                      },
-                  ),
-        )
-        .catch(
-            (error) => (console.error(error), response.status(500).send(error)),
-        );
+        await user.save();
+        return response.send({ token });
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
+};
 
 export const Logout: RequestHandler = async (request, response) => {
     try {
@@ -103,9 +102,8 @@ export const ForgotPassword: (
         email: string;
         resetToken: string;
     }) => void,
-) => RequestHandler =
-    (resetTokenExpirationTime, OnGenerateResetToken) =>
-    async (request, response) => {
+) => RequestHandler = (resetTokenExpirationTime, OnGenerateResetToken) => {
+    return async (request, response) => {
         try {
             const user = await UserModel.findOne({
                 email: request.body["email"],
@@ -133,6 +131,7 @@ export const ForgotPassword: (
             return response.status(500).send(error);
         }
     };
+};
 
 export const ResetPassword: RequestHandler = async (request, response) => {
     try {

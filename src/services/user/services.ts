@@ -8,24 +8,25 @@ import {
     DeleteDocumentByID,
 } from "../../utils";
 
-export const GetMyUser: RequestHandler = (request, response) => {
-    UserModel.findById({
-        _id: (request as typeof request & { userID: string }).userID,
-    })
-        .select([
+export const GetMyUser: RequestHandler = async (request, response) => {
+    try {
+        const _request = request as typeof request & { userID: string };
+        const user = await UserModel.findById(_request["userID"]).select([
             "-password",
             "-_loginToken",
             "-_resetToken",
             "-_resetTokenExpirationDate",
-        ])
-        .then((user) =>
-            user != null
-                ? response.send(user)
-                : response.status(404).send({ message: "User isn't found." }),
-        )
-        .catch(
-            (error) => (console.error(error), response.status(500).send(error)),
-        );
+        ]);
+
+        if (user == null) {
+            return response.status(404).send({ message: "User isn't found." });
+        }
+
+        return response.send(user);
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
 };
 
 export const GetUsers = GetDocuments(
@@ -43,44 +44,47 @@ export const GetUserByID = GetDocumentByID(
     "-_resetTokenExpirationDate",
 );
 
-export const PatchMyUser: RequestHandler = (request, response) => {
-    UserModel.findByIdAndUpdate(
-        {
-            _id: (request as typeof request & { userID: string }).userID,
-        },
-        { ...EmendUserBody(request.body), email: undefined },
-        { new: true },
-    )
-        .select([
+export const PatchMyUser: RequestHandler = async (request, response) => {
+    try {
+        const _request = request as typeof request & { userID: string };
+        const user = await UserModel.findByIdAndUpdate(
+            _request["userID"],
+            { ...EmendUserBody(request.body), email: undefined },
+            { new: true },
+        ).select([
             "-password",
             "-_loginToken",
             "-_resetToken",
             "-_resetTokenExpirationDate",
-        ])
-        .then((user) =>
-            user != null
-                ? response.send(user)
-                : response.status(404).send({ message: "User isn't found." }),
-        )
-        .catch(
-            (error) => (console.error(error), response.status(500).send(error)),
-        );
+        ]);
+
+        if (user == null) {
+            return response.status(404).send({ message: "User isn't found." });
+        }
+
+        return response.send(user);
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
 };
 
-export const DeleteMyUser: RequestHandler = (request, response) => {
-    UserModel.findByIdAndDelete({
-        _id: (request as typeof request & { userID: string }).userID,
-    })
-        .then((user) =>
-            user == null
-                ? response.status(404).send({ message: "User isn't found." })
-                : response.send({
-                      message: "Your user has been deleted successfully.",
-                  }),
-        )
-        .catch(
-            (error) => (console.error(error), response.status(500).send(error)),
-        );
+export const DeleteMyUser: RequestHandler = async (request, response) => {
+    try {
+        const _request = request as typeof request & { userID: string };
+        const user = await UserModel.findByIdAndDelete(_request["userID"]);
+
+        if (user == null) {
+            return response.status(404).send({ message: "User isn't found." });
+        }
+
+        return response.send({
+            message: "Your user has been deleted successfully.",
+        });
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
 };
 
 export const DeleteAllUSers = DeleteAllDocuments(UserModel);
