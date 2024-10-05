@@ -8,10 +8,11 @@
 5. Nodemon.
 6. NodeMailer.
 7. Morgan.
-8. Jest.
-9. Unit Tests.
-10. APIs.
-11. JWT.
-12. Authentication.
-13. Authorization.
-14. Middlewares.
+8. Multer.
+9. Jest.
+10. Unit Tests.
+11. APIs.
+12. JWT.
+13. Authentication.
+14. Authorization.
+15. Middlewares.
